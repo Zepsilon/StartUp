@@ -5,16 +5,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zep.ui.Board;
+import com.zep.ui.Tahta;
 
 public class PlayScreen implements Screen {
 
 	private Board		board;
+	private Tahta	tahta;
 	private SpriteBatch	sb;
 
 	public PlayScreen(SpriteBatch sb) {
 		this.sb = sb;
 
-		board = new Board(50 * 4, 50 * 4, 6, 6); // width, height, x, y
+//		board = new Board(50 * 4, 50 * 4, 6, 6); // width, height, x, y
+		tahta = new Tahta(50 * 4, 50 * 4, 6, 6);
 	}
 
 	@Override
@@ -29,11 +32,13 @@ public class PlayScreen implements Screen {
 
 		update(delta);
 
-		board.render(sb, delta);
+//		board.render(sb, delta);
+		tahta.render(sb, delta);
 	}
 
 	public void update(float delta) {
-		board.update(sb, delta);
+//		board.update(sb, delta);
+		tahta.update(sb, delta);
 	}
 
 	@Override

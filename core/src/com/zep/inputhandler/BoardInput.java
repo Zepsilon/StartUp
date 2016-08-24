@@ -1,9 +1,9 @@
 package com.zep.inputhandler;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.zep.ui.Board;
+import com.zep.ui.Tahta;
 
 /**
  * Created by secelik on 05.08.2016.
@@ -11,32 +11,43 @@ import com.zep.ui.Board;
 public class BoardInput implements InputProcessor {
 
 	private Board board;
+	private Tahta tahta;
 
 	public BoardInput(Board board) {
 		this.board = board;
 
 	}
 
+	public BoardInput(Tahta tahta) {
+		this.tahta = tahta;
+	}
+
 	public boolean keyDown(int keycode) {
 
 		switch (keycode) {
 			case Input.Keys.LEFT:
-				board.moveLeft();
+				tahta.moveLeft(true);
 				break;
 			case Input.Keys.RIGHT:
-				board.moveRight();
+				tahta.moveRight(true);
 				break;
 			case Input.Keys.UP:
-				board.moveUp();
+				tahta.moveUp(true);
 				break;
 			case Input.Keys.DOWN:
-				board.moveDown();
+				tahta.moveDown(true);
+				break;
+			case Input.Keys.NUM_1:
+				tahta.addRow();
+				break;
+			case Input.Keys.NUM_2:
+				tahta.addColumn();
 				break;
 			case Input.Keys.PLUS:
-				board.nextHistory();
+				tahta.nextHistory();
 				break;
 			case Input.Keys.MINUS:
-				board.prevHistory();
+				tahta.prevHistory();
 				break;
 		}
 
@@ -59,7 +70,7 @@ public class BoardInput implements InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
 //		if (pointer == 0) {
-			board.clicked();
+			tahta.clicked();
 //			System.out.println("x:" + screenX + ", y:" + screenY);
 //		}
 

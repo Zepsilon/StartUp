@@ -6,11 +6,13 @@ import com.zep.images.ImageLoader;
 public class Square {
 
 	private Board	board;
+	private Tahta	tahta;
 	private int		width, height;		// boyutlar
 	private int		x, y;				// x - y koordinatlari
 	public int		color;				// renk no
 	private boolean	active;				// kontrol edilebilen
 	public int		centerX, centerY;	// merkez koordinatlari 
+	public boolean	ignore;
 
 	public Square(Board board, int width, int height, int x, int y, int color) {
 		this.board = board;
@@ -23,8 +25,20 @@ public class Square {
 		updateCenter();
 	}
 
+	public Square(Tahta tahta, int width, int height, int x, int y, int color, boolean ignore) {
+		this.tahta = tahta;
+		this.width = width;
+		this.height = height;
+		this.x = x;
+		this.y = y;
+		this.color = color;
+		this.ignore = ignore;
+
+		updateCenter();
+	}
+
 	public void render(SpriteBatch sb, float delta) {
-		sb.draw((color != -1) ? ImageLoader.txtrRegBtn[color] : ImageLoader.txtrRegBtn[0], x, y, width, height);
+		sb.draw(ImageLoader.txtrRegBtn[color], x, y, width, height);
 	}
 
 	public void update(SpriteBatch sb, float delta) {

@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.zep.ui.Board;
 import com.zep.ui.Tahta;
 
 public class PlayScreen implements Screen {
 
-	private Board		board;
-	private Tahta	tahta;
+//	private Board		board;
+	private Tahta		tahta;
 	private SpriteBatch	sb;
 
 	public PlayScreen(SpriteBatch sb) {

@@ -1,8 +1,10 @@
 package com.zep.inputhandler;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.zep.ui.Board;
+import com.badlogic.gdx.math.Vector2;
+import com.zep.object.Direction;
 import com.zep.ui.Tahta;
 
 /**
@@ -10,13 +12,15 @@ import com.zep.ui.Tahta;
  */
 public class BoardInput implements InputProcessor {
 
-	private Board board;
-	private Tahta tahta;
+//	private Board board;
+	private Tahta	tahta;
+	int				x0, y0;
+	boolean			touched;
 
-	public BoardInput(Board board) {
-		this.board = board;
-
-	}
+//	public BoardInput(Board board) {
+//		this.board = board;
+//
+//	}
 
 	public BoardInput(Tahta tahta) {
 		this.tahta = tahta;
@@ -62,25 +66,21 @@ public class BoardInput implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-//		if (pointer == 0) {
-			tahta.clicked();
-//			System.out.println("x:" + screenX + ", y:" + screenY);
-//		}
-
+		resetCoordinats(screenX, screenY);
+		// TODO ilk tiklandiginda aktif karenin ustunde olma sarti aranmali?
+		touched = true;
 
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
 		/*
 		 * if(pointer==0) {
 		 * playState.getGameWorld().getController().setClicked(false);
@@ -93,26 +93,51 @@ public class BoardInput implements InputProcessor {
 		 * 
 		 * }
 		 */
+		touched = false;
 
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-//		System.out.println("ScreenX: " + screenX + ", ScreenY: " + screenY + ", Pointer: " + pointer);
+		
+		// TODO ilk tiklandiginda aktif karenin ustunde olma sarti aranmali?
+		
+		if (touched) {
+			// sag - sol ya da yukari - asagi yonune karar verir
+			if (Math.abs(x0 - screenX) > Math.abs(y0 - screenY)) {
+				if (x0 - screenX > tahta.kWidth) {
+					tahta.drag(Direction.LEFT);
+					resetCoordinats(screenX, screenY);
+				} else if (Math.abs(x0 - screenX) > tahta.kWidth) {
+					tahta.drag(Direction.RIGHT);
+					resetCoordinats(screenX, screenY);
+				}
+			} else {
+				if (y0 - screenY > tahta.kHeight) {
+					tahta.drag(Direction.UP);
+					resetCoordinats(screenX, screenY);
+				} else if (Math.abs(y0 - screenY) > tahta.kHeight) {
+					tahta.drag(Direction.DOWN);
+					resetCoordinats(screenX, screenY);
+				}
+			}
+		}
 		return false;
+	}
+
+	private void resetCoordinats(int screenX, int screenY) {
+		x0 = screenX;
+		y0 = screenY;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

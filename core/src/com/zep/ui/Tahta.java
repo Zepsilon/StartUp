@@ -1,6 +1,5 @@
 package com.zep.ui;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
@@ -16,15 +15,15 @@ import com.zep.object.Direction;
 public class Tahta {
 
 	private OrthographicCamera	camera;
-	private ShapeRenderer		sr;				// basit cizim yapmak icin
+	private ShapeRenderer		sr;					// basit cizim yapmak icin
 
 	private Kare[][]			kare;
-	private int sw, sh;
+	public int					kWidth, kHeight;	// karenin boyutlari. boyut kucultmek icin
 
-	private int					width, height;	// boyutlar
-	private int					x, y;			// x - y koordinatlari
-	public int					row, col;		// satir - sutun sayisi
-	private final int			CN	= 5;		// renk miktari
+	private int					width, height;		// boyutlar
+	private int					x, y;				// x - y koordinatlari
+	public int					row, col;			// satir - sutun sayisi
+	private final int			CN	= 5;			// renk miktari
 
 	public Tahta(int width, int height, int row, int col) {
 		super();
@@ -39,8 +38,8 @@ public class Tahta {
 		this.x = (Gdx.graphics.getWidth() - width) / 2;
 		this.y = (Gdx.graphics.getHeight() - height) / 2;
 
-		sw = 30;
-		sh = 30;
+		kWidth = 25;
+		kHeight = 25;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -53,16 +52,16 @@ public class Tahta {
 			for (int j = 0; j < kare[i].length; j++) {
 				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
 				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
-				kare[i][j] = new Kare(this, sw, sh, color, visible);
+				kare[i][j] = new Kare(this, kWidth, kHeight, color, visible);
 			}
 		}
 
-		kare[0][0] = new Kare(this, sw, sh, (int) new Random().nextInt(CN), true);
+		kare[0][0] = new Kare(this, kWidth, kHeight, (int) new Random().nextInt(CN), true);
 		kare[0][0].setActive(true);
 
 		Gdx.input.setInputProcessor(new BoardInput(this)); // input processor atandi (tus hareketleri, dokunma, surukleme vs.)
 
-		checkSame(null);
+		checkSame(Direction.NOTHING);
 		print();
 	}
 
@@ -70,8 +69,8 @@ public class Tahta {
 		sr.begin(ShapeType.Line);
 		sr.setProjectionMatrix(camera.combined);
 		sr.setColor(Color.RED);
-		sr.line(x - 10, y - 10, x + width + 10, y - 10);
-		sr.line(x - 10, y - 10, x - 10, y + height + 10);
+//		sr.line(x - 10, y - 10, x + width + 10, y - 10);
+//		sr.line(x - 10, y - 10, x - 10, y + height + 10);
 		sr.setColor(Color.YELLOW);
 		sr.rect(x, y, width, height);
 		sr.end();
@@ -151,7 +150,7 @@ public class Tahta {
 		for (int i = 1; i < kare.length - 1; i++) {
 			color = kare[i][1].color;
 			for (int j = 1; j < kare[i].length - 1; j++) {
-				if (kare[j][i] != null && kare[i][j].visible && color != kare[i][j].color) {
+				if (kare[i][j] != null && kare[i][j].visible && color != kare[i][j].color) {
 					color = -1;
 					break;
 				}
@@ -296,33 +295,111 @@ public class Tahta {
 	}
 
 	public void addRow() {
-		// TODO Auto-generated method stub
+		Kare[][] kClone = kare.clone();
+		kare = new Kare[kare.length][kare[0].length + 1];
+
+		copyArray(kClone);
+
+		int color;
+		boolean visible;
+		int activeI = -1, activeJ = -1;
+		for (int i = 0; i < kare.length; i++) {
+			for (int j = kare[0].length - 2; j < kare[0].length; j++) {
+				if (kare[i][j] != null && kare[i][j].isActive()) {
+					activeI = i;
+					activeJ = j;
+					continue;
+				}
+				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
+				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
+				kare[i][j] = new Kare(this, kWidth, kHeight, color, visible);
+			}
+		}
+
+		shiftActiveKareToDown(activeI, activeJ);
 
 	}
 
 	public void addColumn() {
-		Kare[][] args = kare.clone();
+		Kare[][] kClone = kare.clone();
 		kare = new Kare[kare.length + 1][kare[0].length];
-		System.arraycopy(args, 0, kare, 0, args.length);
-		for (int i = 0; i < args.length; i++) {
-			System.arraycopy(args[i], 0, kare[i], 0, args[i].length);
-		}
-		
+
+		copyArray(kClone);
+
 		int color;
 		boolean visible;
-		for (int i = kare.length-2; i < kare.length; i++) {
+		int activeI = -1, activeJ = -1;
+		for (int i = kare.length - 2; i < kare.length; i++) {
 			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].isActive())
+				if (kare[i][j] != null && kare[i][j].isActive()) {
+					activeI = i;
+					activeJ = j;
 					continue;
+				}
 				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
 				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
-				kare[i][j] = new Kare(this, sw, sh, color, visible);
+				kare[i][j] = new Kare(this, kWidth, kHeight, color, visible);
 			}
 		}
-		
+
+		shiftActiveKareToRight(activeI, activeJ);
+
 	}
 
-	public void clicked() {
+	private void copyArray(Kare[][] kClone) {
+		for (int i = 0; i < kClone.length; i++) {
+			for (int j = 0; j < kClone[i].length; j++) {
+				if (kClone[i][j] != null) {
+					kare[i][j] = kClone[i][j];
+				}
+			}
+		}
+	}
+
+	private void shiftActiveKareToRight(int i, int j) {
+		if (i > -1 && j > -1) { // aktif kare sondaysa (eklenen sütunda)
+			kare[i + 1][j].color = kare[i][j].color;
+			kare[i + 1][j].visible = true;
+			kare[i + 1][j].setActive(true);
+
+			kare[i][j].color = new Random().nextInt(CN);
+			kare[i][j].visible = (j > 0 && j < kare[0].length - 1);
+			kare[i][j].setActive(false);
+
+		}
+	}
+
+	private void shiftActiveKareToDown(int i, int j) {
+		if (i > -1 && j > -1) { // aktif kare sondaysa (eklenen satirda)
+			kare[i][j + 1].color = kare[i][j].color;
+			kare[i][j + 1].visible = true;
+			kare[i][j + 1].setActive(true);
+
+			kare[i][j].color = new Random().nextInt(CN);
+			kare[i][j].visible = (i > 0 && i < kare.length - 1);
+			kare[i][j].setActive(false);
+
+		}
+	}
+
+	public void drag(Direction direction) {
+		System.out.println("Direction: " + direction);
+		switch (direction) {
+			case LEFT:
+				moveLeft(true);
+				break;
+			case RIGHT:
+				moveRight(true);
+				break;
+			case UP:
+				moveUp(true);
+				break;
+			case DOWN:
+				moveDown(true);
+				break;
+			default:
+				// hareket etme
+		}
 	}
 
 	public int getKareRowLen() {

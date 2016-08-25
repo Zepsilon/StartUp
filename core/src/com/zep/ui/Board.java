@@ -56,7 +56,7 @@ public class Board {
 			}
 		}
 
-		Gdx.input.setInputProcessor(new BoardInput(this)); // input processor atandi (tus hareketleri, dokunma, surukleme vs.)
+//		Gdx.input.setInputProcessor(new BoardInput(this)); // input processor atandi (tus hareketleri, dokunma, surukleme vs.)
 
 		prepareRowColumn(square[1][1].x(), square[1][1].y());
 

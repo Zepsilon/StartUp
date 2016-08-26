@@ -11,6 +11,7 @@ public class PlayScreen implements Screen {
 //	private Board		board;
 	private Tahta		tahta;
 	private SpriteBatch	sb;
+	private float timer;
 
 	public PlayScreen(SpriteBatch sb) {
 		this.sb = sb;
@@ -29,7 +30,7 @@ public class PlayScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		update(delta);
+//		update(delta);
 
 //		board.render(sb, delta);
 		tahta.render(sb, delta);
@@ -37,7 +38,11 @@ public class PlayScreen implements Screen {
 
 	public void update(float delta) {
 //		board.update(sb, delta);
-		tahta.update(sb, delta);
+		timer += delta;
+		if (timer >= .05f) {
+			timer = 0;
+//			tahta.update(sb, delta);
+		}
 	}
 
 	@Override

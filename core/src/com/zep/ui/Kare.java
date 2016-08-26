@@ -1,5 +1,6 @@
 package com.zep.ui;
 
+
 public class Kare {
 
 	private Tahta	tahta;

@@ -8,26 +8,37 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
+import com.zep.action.Action;
 import com.zep.images.ImageLoader;
-import com.zep.inputhandler.BoardInput;
+import com.zep.inputhandler.TahtaInputProcessor;
 import com.zep.object.Direction;
 
 public class Tahta {
 
 	private OrthographicCamera	camera;
-	private ShapeRenderer		sr;					// basit cizim yapmak icin
+	private ShapeRenderer		sr;				// basit cizim yapmak icin
+	private Action				action;
 
 	private Kare[][]			kare;
-	public int					kWidth, kHeight;	// karenin boyutlari. boyut kucultmek icin
 
-	private int					width, height;		// boyutlar
-	private int					x, y;				// x - y koordinatlari
-	public int					row, col;			// satir - sutun sayisi
-	private final int			CN	= 5;			// renk miktari
+	private int					width, height;	// boyutlar
+	private int					x, y;			// x - y koordinatlari
+	public int					row, col;		// satir - sutun sayisi
+	public static final int		CN	= 5;		// renk miktari
+
+	public Vector2				speed;
+	
 
 	public Tahta(int width, int height, int row, int col) {
 		super();
 		sr = new ShapeRenderer();
+
+		int kareWidth = 25;
+		int kareHeight = 25;
+
+		speed = new Vector2(0, 0);
+		action = new Action(this, kareWidth, kareHeight);
 
 		this.width = width;
 		this.height = height;
@@ -37,9 +48,6 @@ public class Tahta {
 
 		this.x = (Gdx.graphics.getWidth() - width) / 2;
 		this.y = (Gdx.graphics.getHeight() - height) / 2;
-
-		kWidth = 25;
-		kHeight = 25;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -52,14 +60,14 @@ public class Tahta {
 			for (int j = 0; j < kare[i].length; j++) {
 				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
 				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
-				kare[i][j] = new Kare(this, kWidth, kHeight, color, visible);
+				kare[i][j] = new Kare(this, kareWidth, kareHeight, color, visible);
 			}
 		}
 
-		kare[0][0] = new Kare(this, kWidth, kHeight, (int) new Random().nextInt(CN), true);
+		kare[0][0] = new Kare(this, kareWidth, kareHeight, (int) new Random().nextInt(CN), true);
 		kare[0][0].setActive(true);
 
-		Gdx.input.setInputProcessor(new BoardInput(this)); // input processor atandi (tus hareketleri, dokunma, surukleme vs.)
+		Gdx.input.setInputProcessor(new TahtaInputProcessor(action)); // input processor atandi (tus hareketleri, dokunma, surukleme vs.)
 
 		checkSame(Direction.NOTHING);
 		print();
@@ -78,11 +86,13 @@ public class Tahta {
 		sb.begin();
 		sb.setProjectionMatrix(camera.combined);
 
+		action.playAnimation();
+		
 		for (int i = 0; i < kare.length; i++) {
 			for (int j = 0; j < kare[i].length; j++) {
 				if (kare[i][j] != null && kare[i][j].visible) {
-					sb.draw(ImageLoader.txtrRegBtn[kare[i][j].color], x + i * kare[i][j].width(), y + j * kare[i][j].height(), kare[i][j].width(),
-							kare[i][j].height());
+					sb.draw(ImageLoader.txtrRegBtn[kare[i][j].color], x + i * kare[i][j].width() + speed.x, y + j * kare[i][j].height() + speed.y,
+							kare[i][j].width(), kare[i][j].height());
 				}
 			}
 		}
@@ -90,25 +100,23 @@ public class Tahta {
 		sb.end();
 	}
 
-	public void update(SpriteBatch sb, float delta) {
-
-		sb.begin();
-		sb.setProjectionMatrix(camera.combined);
-		for (int i = 0; i < kare.length; i++) {
-			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].visible) {
-//					x + i * sw, y + j * sh, 
-					sb.draw(ImageLoader.txtrRegBtn[kare[i][j].color], x + i * kare[i][j].width(), y + j * kare[i][j].height(), kare[i][j].width(),
-							kare[i][j].height());
-//					sb.draw(ImageLoader.txtrRegBtn[0], kare[i][j].centerX, kare[i][j].centerY, 5, 5);
-//					sb.draw(ImageLoader.txtrRegBtn[1], kare[i][j].x(), kare[i][j].y(), 5, 5);
-				}
-			}
-		}
-
-		sb.end();
-
-	}
+//	public void update(SpriteBatch sb, float delta) {
+//System.out.println("update");
+//		sb.begin();
+//		sb.setProjectionMatrix(camera.combined);
+//		for (int i = 0; i < kare.length; i++) {
+//			for (int j = 0; j < kare[i].length; j++) {
+//				if (kare[i][j] != null && kare[i][j].visible) {
+////					x + i * sw, y + j * sh, 
+//					sb.draw(ImageLoader.txtrRegBtn[kare[i][j].color], x + i * kare[i][j].width(), y + j * kare[i][j].height(), kare[i][j].width(),
+//							kare[i][j].height());
+//				}
+//			}
+//		}
+//
+//		sb.end();
+//
+//	}
 
 	public void checkSame(Direction direction) {
 		boolean tryAgain = true;
@@ -133,11 +141,11 @@ public class Tahta {
 			if (color > -1) {
 				System.out.println("Ayni Satir: " + j);
 
-				moveByDirection(direction, true);
-				deleteRow(j);
+				action.moveByDirection(direction, true);
+				action.deleteRow(j);
 
 				if (kare[0].length > 3)
-					moveByDirection(direction, false);
+					action.moveByDirection(direction, false);
 				return j;
 			}
 		}
@@ -157,249 +165,17 @@ public class Tahta {
 			}
 
 			if (color > -1) {
-				System.out.println("Ayni Sütun: " + i);
+//				System.out.println("Ayni Sütun: " + i);
 
-				moveByDirection(direction, true);
-				deleteColumn(i);
+				action.moveByDirection(direction, true);
+				action.deleteColumn(i);
 				if (kare.length > 3)
-					moveByDirection(direction, false);
+					action.moveByDirection(direction, false);
 				return i;
 			}
 		}
 
 		return -1;
-	}
-
-	private void deleteRow(int jD) {
-		Kare[][] args = kare.clone();
-		if (args != null && args.length > 0) {
-			kare = new Kare[args.length][args[0].length - 1];
-			for (int i = 0; i < args.length; i++) {
-				int newColId = 0;
-				for (int j = 0; j < args[i].length; j++) {
-					if (j != jD) {
-						kare[i][newColId] = args[i][j];
-						newColId++;
-					}
-				}
-			}
-
-		}
-
-	}
-
-	private void deleteColumn(int iD) {
-		Kare[][] args = kare.clone();
-		if (args != null && args.length > 0) {
-			kare = new Kare[args.length - 1][args[0].length];
-			int newRowId = 0;
-			for (int i = 0; i < args.length; i++) {
-				if (i != iD) {
-					for (int j = 0; j < args[i].length; j++) {
-						kare[newRowId][j] = args[i][j];
-					}
-					newRowId++;
-				}
-			}
-
-		}
-
-	}
-
-	private void moveByDirection(Direction direction, boolean decrease) {
-		switch (direction) {
-			case LEFT:
-			case RIGHT:
-				if (decrease)
-					moveUp(false);
-				else
-					moveDown(false);
-				break;
-
-			case UP:
-			case DOWN:
-				if (decrease)
-					moveLeft(false);
-				else
-					moveRight(false);
-			default:
-				// hareket etme
-		}
-	}
-
-	public void moveRight(boolean checkSame) {
-		for (int i = 0; i < kare.length; i++) {
-			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].isActive()) {
-					kare[i][j].moveRight(i, j, kare[i][j].color, false);
-					if (checkSame)
-						checkSame(Direction.RIGHT);
-					print();
-					return;
-				}
-			}
-		}
-
-	}
-
-	public void moveLeft(boolean checkSame) {
-		for (int i = 0; i < kare.length; i++) {
-			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].isActive()) {
-					kare[i][j].moveLeft(i, j, kare[i][j].color, false);
-					if (checkSame)
-						checkSame(Direction.LEFT);
-					print();
-					return;
-				}
-			}
-		}
-	}
-
-	public void moveDown(boolean checkSame) {
-		for (int i = 0; i < kare.length; i++) {
-			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].isActive()) {
-					kare[i][j].moveDown(i, j, kare[i][j].color, false);
-					if (checkSame)
-						checkSame(Direction.DOWN);
-					print();
-					return;
-				}
-			}
-		}
-	}
-
-	public void moveUp(boolean checkSame) {
-		for (int i = 0; i < kare.length; i++) {
-			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].isActive()) {
-					kare[i][j].moveUp(i, j, kare[i][j].color, false);
-					if (checkSame)
-						checkSame(Direction.UP);
-					print();
-					return;
-				}
-			}
-		}
-	}
-
-	public void nextHistory() {
-//		kare = history.next(kare);
-//		print(false);
-	}
-
-	public void prevHistory() {
-//		kare = history.previous(kare);
-//		print(false);
-	}
-
-	public void addRow() {
-		Kare[][] kClone = kare.clone();
-		kare = new Kare[kare.length][kare[0].length + 1];
-
-		copyArray(kClone);
-
-		int color;
-		boolean visible;
-		int activeI = -1, activeJ = -1;
-		for (int i = 0; i < kare.length; i++) {
-			for (int j = kare[0].length - 2; j < kare[0].length; j++) {
-				if (kare[i][j] != null && kare[i][j].isActive()) {
-					activeI = i;
-					activeJ = j;
-					continue;
-				}
-				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
-				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
-				kare[i][j] = new Kare(this, kWidth, kHeight, color, visible);
-			}
-		}
-
-		shiftActiveKareToDown(activeI, activeJ);
-
-	}
-
-	public void addColumn() {
-		Kare[][] kClone = kare.clone();
-		kare = new Kare[kare.length + 1][kare[0].length];
-
-		copyArray(kClone);
-
-		int color;
-		boolean visible;
-		int activeI = -1, activeJ = -1;
-		for (int i = kare.length - 2; i < kare.length; i++) {
-			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].isActive()) {
-					activeI = i;
-					activeJ = j;
-					continue;
-				}
-				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
-				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
-				kare[i][j] = new Kare(this, kWidth, kHeight, color, visible);
-			}
-		}
-
-		shiftActiveKareToRight(activeI, activeJ);
-
-	}
-
-	private void copyArray(Kare[][] kClone) {
-		for (int i = 0; i < kClone.length; i++) {
-			for (int j = 0; j < kClone[i].length; j++) {
-				if (kClone[i][j] != null) {
-					kare[i][j] = kClone[i][j];
-				}
-			}
-		}
-	}
-
-	private void shiftActiveKareToRight(int i, int j) {
-		if (i > -1 && j > -1) { // aktif kare sondaysa (eklenen sütunda)
-			kare[i + 1][j].color = kare[i][j].color;
-			kare[i + 1][j].visible = true;
-			kare[i + 1][j].setActive(true);
-
-			kare[i][j].color = new Random().nextInt(CN);
-			kare[i][j].visible = (j > 0 && j < kare[0].length - 1);
-			kare[i][j].setActive(false);
-
-		}
-	}
-
-	private void shiftActiveKareToDown(int i, int j) {
-		if (i > -1 && j > -1) { // aktif kare sondaysa (eklenen satirda)
-			kare[i][j + 1].color = kare[i][j].color;
-			kare[i][j + 1].visible = true;
-			kare[i][j + 1].setActive(true);
-
-			kare[i][j].color = new Random().nextInt(CN);
-			kare[i][j].visible = (i > 0 && i < kare.length - 1);
-			kare[i][j].setActive(false);
-
-		}
-	}
-
-	public void drag(Direction direction) {
-		System.out.println("Direction: " + direction);
-		switch (direction) {
-			case LEFT:
-				moveLeft(true);
-				break;
-			case RIGHT:
-				moveRight(true);
-				break;
-			case UP:
-				moveUp(true);
-				break;
-			case DOWN:
-				moveDown(true);
-				break;
-			default:
-				// hareket etme
-		}
 	}
 
 	public int getKareRowLen() {

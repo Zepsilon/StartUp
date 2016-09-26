@@ -3,96 +3,78 @@ package com.zep.ui;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.zep.action.Action;
-import com.zep.images.ImageLoader;
-import com.zep.inputhandler.TahtaInputProcessor;
+import com.zep.fx.AxisType;
+import com.zep.fx.FxRmCentripetalDot;
+import com.zep.fx.FxRemove;
 import com.zep.object.Direction;
+import com.zep.sounds.MusicLoader;
+import com.zep.states.PlayState;
 
 public class Tahta {
 
-	private OrthographicCamera	camera;
-	private ShapeRenderer		sr;				// basit cizim yapmak icin
-	private Action				action;
+	private PlayState		state;
+	private Kare[][]		kare;
+	private int				kareDW, kareDH;	// default boyutlar (update asamasinda animasyon icin kullanilacak)
+	private int				x, y;			// x - y koordinatlari
+	private int				row, col;		// satir - sutun sayisi
+	public static final int	CN	= 5;		// renk miktari
 
-	private Kare[][]			kare;
+	private FxRemove		fx;
+	private AxisType		animType;
+	private Direction		direction;
 
-	private int					width, height;	// boyutlar
-	private int					x, y;			// x - y koordinatlari
-	public int					row, col;		// satir - sutun sayisi
-	public static final int		CN	= 5;		// renk miktari
+	private boolean			print;
 
-	public Vector2				speed;
-	
-
-	public Tahta(int width, int height, int row, int col) {
+	public Tahta(PlayState state, int kareDW, int row, int col) {
 		super();
-		sr = new ShapeRenderer();
 
-		int kareWidth = 25;
-		int kareHeight = 25;
+		this.state = state;
 
-		speed = new Vector2(0, 0);
-		action = new Action(this, kareWidth, kareHeight);
-
-		this.width = width;
-		this.height = height;
+		this.kareDW = kareDW;
+		kareDH = kareDW;
 
 		this.row = row;
 		this.col = col;
 
-		this.x = (Gdx.graphics.getWidth() - width) / 2;
-		this.y = (Gdx.graphics.getHeight() - height) / 2;
-
-		camera = new OrthographicCamera();
-		camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
 		kare = new Kare[row][col];
 
+		initKare(kareDW, kareDH);
+
+		direction = Direction.NOTHING;
+		fx = new FxRmCentripetalDot(); // ForeLineByAxis(); // CentripetalLineByAxis();
+
+//		System.out.println("Score: " + state.getScore().getScore());
+//		System.out.println("HighScore: " + state.getScore().getHighScore());
+		print();
+	}
+
+	private void initKare(int width, int height) {
 		int color;
 		boolean visible;
 		for (int i = 0; i < kare.length; i++) {
 			for (int j = 0; j < kare[i].length; j++) {
 				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
 				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
-				kare[i][j] = new Kare(this, kareWidth, kareHeight, color, visible);
+				kare[i][j] = new Kare(this, width, height, color, visible);
 			}
 		}
 
-		kare[0][0] = new Kare(this, kareWidth, kareHeight, (int) new Random().nextInt(CN), true);
+		kare[0][0] = new Kare(this, width, height, (int) new Random().nextInt(CN), true);
 		kare[0][0].setActive(true);
-
-		Gdx.input.setInputProcessor(new TahtaInputProcessor(action)); // input processor atandi (tus hareketleri, dokunma, surukleme vs.)
-
-		checkSame(Direction.NOTHING);
-		print();
+//		kare[1][1].setMoveable(false);
 	}
 
-	public void render(SpriteBatch sb, float delta) {
-		sr.begin(ShapeType.Line);
-		sr.setProjectionMatrix(camera.combined);
-		sr.setColor(Color.RED);
-//		sr.line(x - 10, y - 10, x + width + 10, y - 10);
-//		sr.line(x - 10, y - 10, x - 10, y + height + 10);
-		sr.setColor(Color.YELLOW);
-		sr.rect(x, y, width, height);
-		sr.end();
-
+	public void render(SpriteBatch sb) {
 		sb.begin();
-		sb.setProjectionMatrix(camera.combined);
 
-		action.playAnimation();
-		
+		x = (Gdx.graphics.getWidth() - kareDW * getKareRowLen()) / 2;
+		y = (2 * Gdx.graphics.getHeight() / 3) - (kareDH * getKareColLen() / 2);
 		for (int i = 0; i < kare.length; i++) {
 			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].visible) {
-					sb.draw(ImageLoader.txtrRegBtn[kare[i][j].color], x + i * kare[i][j].width() + speed.x, y + j * kare[i][j].height() + speed.y,
-							kare[i][j].width(), kare[i][j].height());
+				if (kare[i][j] != null && kare[i][j].isVisible()) {
+					fx.draw(sb, kare[i][j], i, j, kareDW, kareDH, x, y);
 				}
 			}
 		}
@@ -100,39 +82,87 @@ public class Tahta {
 		sb.end();
 	}
 
-//	public void update(SpriteBatch sb, float delta) {
-//System.out.println("update");
-//		sb.begin();
-//		sb.setProjectionMatrix(camera.combined);
-//		for (int i = 0; i < kare.length; i++) {
-//			for (int j = 0; j < kare[i].length; j++) {
-//				if (kare[i][j] != null && kare[i][j].visible) {
-////					x + i * sw, y + j * sh, 
-//					sb.draw(ImageLoader.txtrRegBtn[kare[i][j].color], x + i * kare[i][j].width(), y + j * kare[i][j].height(), kare[i][j].width(),
-//							kare[i][j].height());
-//				}
-//			}
-//		}
-//
-//		sb.end();
-//
-//	}
+	public void update(float delta) {
+
+		Vector2 idx = new Vector2(-1, -1);
+
+		for (int i = 0; i < kare.length; i++) {
+			idx.x = (idx.x > 0) ? idx.x : -1;
+			for (int j = 0; j < kare[i].length; j++) {
+				idx.y = (idx.y > 0) ? idx.y : -1;
+				if (kare[i][j] != null && kare[i][j].isMarkForAnim() && kare[i][j].isVisible()) {
+					fx.animate(kare[i][j], i, j, idx, kareDW, kareDH, animType);
+				}
+			}
+		}
+
+		deleteByIdx((int) idx.x, (int) idx.y);
+	}
+
+	private void deleteByIdx(int iD, int jD) {
+
+		if (iD == -1 && jD == -1)
+			return;
+
+		if (getKareRowLen() > 3 || getKareColLen() > 3) {
+
+			if (iD > 0) {
+				state.getController().deleteColumn(iD);
+			}
+
+			if (jD > 0) {
+				state.getController().deleteRow(jD);
+			}
+
+			state.reScheduleTask();
+
+			animType = AxisType.RESET;
+			checkSame(direction);
+//			state.getController().moveByDirection(direction, false);
+		} else {
+			System.out.println("Bitti!");
+			System.out.println("Score: " + state.getScore().getScore());
+			System.out.println("HighScore: " + state.getScore().getHighScore());
+
+			MusicLoader.musicStopFx();
+			state.cancelSchedule();
+
+			disableActive();
+
+			if (getKareColLen() > 2)
+				state.getController().deleteRow(1);
+
+			print = true;
+			print();
+		}
+	}
+
+	private void disableActive() {
+
+		for (int i = 0; i < kare.length; i++) {
+			for (int j = 0; j < kare[i].length; j++) {
+				if (kare[i][j] != null) {
+					kare[i][j].setActive(false);
+				}
+			}
+		}
+	}
 
 	public void checkSame(Direction direction) {
-		boolean tryAgain = true;
-		while (tryAgain) {
-			tryAgain = getSameColumn(direction) > 0;
-			tryAgain = tryAgain || getSameRow(direction) > 0;
-			direction = Direction.NOTHING;
-		}
+		this.direction = direction;
+		print();
+		getSameColumn(direction);
+		getSameRow(direction);
+
+		direction = Direction.NOTHING;
 	}
 
 	private int getSameRow(Direction direction) {
 		int color = -1;
 		for (int j = 1; j < kare[1].length - 1; j++) {
-			color = kare[1][j].color;
+			color = kare[1][j].color();
 			for (int i = 1; i < kare.length - 1; i++) {
-				if (kare[i][j] != null && kare[i][j].visible && color != kare[i][j].color) {
+				if (kare[i][j] != null && kare[i][j].isVisible() && color != kare[i][j].color()) {
 					color = -1;
 					break;
 				}
@@ -141,11 +171,15 @@ public class Tahta {
 			if (color > -1) {
 				System.out.println("Ayni Satir: " + j);
 
-				action.moveByDirection(direction, true);
-				action.deleteRow(j);
+				getFx().animType(true);
 
-				if (kare[0].length > 3)
-					action.moveByDirection(direction, false);
+				MusicLoader.fxRemove(Direction.NOTHING.equals(direction));
+
+				state.getController().markRow(j); // animasyon icin gerekli
+				animType = AxisType.COL;
+
+				System.out.println("Score: " + state.getScore().getScore(getKareRowLen()));
+
 				return j;
 			}
 		}
@@ -156,21 +190,26 @@ public class Tahta {
 	private int getSameColumn(Direction direction) {
 		int color = -1;
 		for (int i = 1; i < kare.length - 1; i++) {
-			color = kare[i][1].color;
+			color = kare[i][1].color();
 			for (int j = 1; j < kare[i].length - 1; j++) {
-				if (kare[i][j] != null && kare[i][j].visible && color != kare[i][j].color) {
+				if (kare[i][j] != null && kare[i][j].isVisible() && color != kare[i][j].color()) {
 					color = -1;
 					break;
 				}
 			}
 
 			if (color > -1) {
-//				System.out.println("Ayni Sütun: " + i);
+				System.out.println("Ayni Sütun: " + i);
 
-				action.moveByDirection(direction, true);
-				action.deleteColumn(i);
-				if (kare.length > 3)
-					action.moveByDirection(direction, false);
+				getFx().animType(true);
+
+				MusicLoader.fxRemove(Direction.NOTHING.equals(direction));
+
+				state.getController().markColumn(i); // animasyon icin gerekli
+				animType = AxisType.ROW;
+
+				System.out.println("Score: " + state.getScore().getScore(getKareColLen()));
+
 				return i;
 			}
 		}
@@ -194,14 +233,6 @@ public class Tahta {
 		return this.y;
 	}
 
-	public int width() {
-		return width;
-	}
-
-	public int height() {
-		return height;
-	}
-
 	public Kare[][] getKare() {
 		return kare;
 	}
@@ -210,12 +241,47 @@ public class Tahta {
 		this.kare = kare;
 	}
 
+	public int getKareDW() {
+		return kareDW;
+	}
+
+	public void setKareDW(int kareDW) {
+		this.kareDW = kareDW;
+	}
+
+	public int getKareDH() {
+		return kareDH;
+	}
+
+	public void setKareDH(int kareDH) {
+		this.kareDH = kareDH;
+	}
+
+	public FxRemove getFx() {
+		return fx;
+	}
+
+	public PlayState getState() {
+		return state;
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
 	public void print() {
+
+		if (print == false)
+			return;
 
 		for (int i = 0; i < kare.length; i++) {
 			for (int j = 0; j < kare[i].length; j++) {
-				if (kare[i][j] != null && kare[i][j].visible)
-					System.out.print(kare[i][j].color + " ");
+				if (kare[i][j] != null && kare[i][j].isVisible())
+					System.out.print(kare[i][j].color() + " ");
 				else
 					System.out.print("x ");
 			}
@@ -227,7 +293,7 @@ public class Tahta {
 
 	@Override
 	public String toString() {
-		return "Tahta [width=" + width + ", height=" + height + ", x=" + x + ", y=" + y + ", row=" + row + ", col=" + col + "]";
+		return "Tahta [x=" + x + ", y=" + y + ", row=" + row + ", col=" + col + "]";
 	}
 
 }

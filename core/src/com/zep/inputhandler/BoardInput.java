@@ -1,19 +1,15 @@
 package com.zep.inputhandler;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
-import com.zep.object.Direction;
-import com.zep.ui.Tahta;
+import com.zep.ui.Board;
 
 /**
  * Created by secelik on 05.08.2016.
  */
 public class BoardInput implements InputProcessor {
 
-//	private Board board;
-	private Tahta	tahta;
+	private Board	board;
 	int				x0, y0;
 	boolean			touched;
 
@@ -22,41 +18,56 @@ public class BoardInput implements InputProcessor {
 //
 //	}
 
-	public BoardInput(Tahta tahta) {
-		this.tahta = tahta;
+	public BoardInput(Board tahta) {
+		this.board = tahta;
 	}
 
 	public boolean keyDown(int keycode) {
 
 		switch (keycode) {
 			case Input.Keys.LEFT:
-				tahta.moveLeft(true);
+				board.moveLeft();
 				break;
 			case Input.Keys.RIGHT:
-				tahta.moveRight(true);
+				board.moveRight();
 				break;
 			case Input.Keys.UP:
-				tahta.moveUp(true);
+				board.moveUp();
 				break;
 			case Input.Keys.DOWN:
-				tahta.moveDown(true);
+				board.moveDown();
 				break;
-			case Input.Keys.NUM_1:
-				tahta.addRow();
-				break;
-			case Input.Keys.NUM_2:
-				tahta.addColumn();
-				break;
+//			case Input.Keys.NUM_1:
+//				board.addRow();
+//				break;
+//			case Input.Keys.NUM_2:
+//				board.addColumn();
+//				break;
 			case Input.Keys.PLUS:
-				tahta.nextHistory();
+				board.nextHistory();
 				break;
 			case Input.Keys.MINUS:
-				tahta.prevHistory();
+				board.prevHistory();
 				break;
 		}
 
 		return false;
 	}
+
+//	public void moveRight(boolean checkSame) {
+//		for (int i = 0; i < tahta.getKare().length; i++) {
+//			for (int j = 0; j < tahta.getKare()[i].length; j++) {
+//				if (tahta.getKare()[i][j] != null && tahta.getKare()[i][j].isActive()) {
+//					tahta.getKare()[i][j].moveRight(i, j, tahta.getKare()[i][j].color, false);
+//					if (checkSame)
+//						checkSame(Direction.RIGHT);
+//					print();
+//					return;
+//				}
+//			}
+//		}
+//
+//	}
 
 	@Override
 	public boolean keyUp(int keycode) {
@@ -73,7 +84,7 @@ public class BoardInput implements InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
 		resetCoordinats(screenX, screenY);
-		// TODO ilk tiklandiginda aktif karenin ustunde olma sarti aranmali?
+		// TODO ilk tiklandiginda aktif karenin ustunde ya da aynı satir/susutunda olma sarti aranmali?
 		touched = true;
 
 		return false;
@@ -81,18 +92,6 @@ public class BoardInput implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		/*
-		 * if(pointer==0) {
-		 * playState.getGameWorld().getController().setClicked(false);
-		 * playState.getGameWorld().getPlayer().setMoveWithDirection(false);
-		 * playState.getGameWorld().getController().setEndCord(new
-		 * Vector2(2*Gdx.graphics.getWidth()/10,
-		 * Gdx.graphics.getHeight()-2*Gdx.graphics.getWidth()/10)
-		 * 
-		 * );
-		 * 
-		 * }
-		 */
 		touched = false;
 
 		return false;
@@ -100,29 +99,6 @@ public class BoardInput implements InputProcessor {
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		
-		// TODO ilk tiklandiginda aktif karenin ustunde olma sarti aranmali?
-		
-		if (touched) {
-			// sag - sol ya da yukari - asagi yonune karar verir
-			if (Math.abs(x0 - screenX) > Math.abs(y0 - screenY)) {
-				if (x0 - screenX > tahta.kWidth) {
-					tahta.drag(Direction.LEFT);
-					resetCoordinats(screenX, screenY);
-				} else if (Math.abs(x0 - screenX) > tahta.kWidth) {
-					tahta.drag(Direction.RIGHT);
-					resetCoordinats(screenX, screenY);
-				}
-			} else {
-				if (y0 - screenY > tahta.kHeight) {
-					tahta.drag(Direction.UP);
-					resetCoordinats(screenX, screenY);
-				} else if (Math.abs(y0 - screenY) > tahta.kHeight) {
-					tahta.drag(Direction.DOWN);
-					resetCoordinats(screenX, screenY);
-				}
-			}
-		}
 		return false;
 	}
 

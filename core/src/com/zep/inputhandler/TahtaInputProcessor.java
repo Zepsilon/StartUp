@@ -2,7 +2,7 @@ package com.zep.inputhandler;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.zep.action.Action;
+import com.zep.controller.Controller;
 import com.zep.object.Direction;
 
 /**
@@ -11,45 +11,45 @@ import com.zep.object.Direction;
 public class TahtaInputProcessor implements InputProcessor {
 
 //	private Board board;
-	private Action	action;
-	int				x0, y0;
-	boolean			touched;
+	private Controller	controller;
+	int					x0, y0;
+	boolean				touched;
 
 //	public BoardInput(Board board) {
 //		this.board = board;
 //
 //	}
 
-	public TahtaInputProcessor(Action action) {
-		this.action = action;
+	public TahtaInputProcessor(Controller controller) {
+		this.controller = controller;
 	}
 
 	public boolean keyDown(int keycode) {
 
 		switch (keycode) {
 			case Input.Keys.LEFT:
-				action.moveLeft(true);
+				controller.moveLeft(true);
 				break;
 			case Input.Keys.RIGHT:
-				action.moveRight(true);
+				controller.moveRight(true);
 				break;
 			case Input.Keys.UP:
-				action.moveUp(true);
+				controller.moveUp(true);
 				break;
 			case Input.Keys.DOWN:
-				action.moveDown(true);
+				controller.moveDown(true);
 				break;
 			case Input.Keys.NUM_1:
-				action.addRow();
+				controller.addRow();
 				break;
 			case Input.Keys.NUM_2:
-				action.addColumn();
+				controller.addColumn();
 				break;
 			case Input.Keys.PLUS:
-				action.nextHistory();
+				controller.nextHistory();
 				break;
 			case Input.Keys.MINUS:
-				action.prevHistory();
+				controller.prevHistory();
 				break;
 		}
 
@@ -105,19 +105,19 @@ public class TahtaInputProcessor implements InputProcessor {
 		if (touched) {
 			// sag - sol ya da yukari - asagi yonune karar verir
 			if (Math.abs(x0 - screenX) > Math.abs(y0 - screenY)) {
-				if (x0 - screenX > action.width()) {
-					action.drag(Direction.LEFT);
+				if (x0 - screenX > controller.width() - 1) {
+					controller.drag(Direction.LEFT);
 					resetCoordinats(screenX, screenY);
-				} else if (Math.abs(x0 - screenX) > action.width()) {
-					action.drag(Direction.RIGHT);
+				} else if (Math.abs(x0 - screenX) > controller.width() - 1) {
+					controller.drag(Direction.RIGHT);
 					resetCoordinats(screenX, screenY);
 				}
 			} else {
-				if (y0 - screenY > action.height()) {
-					action.drag(Direction.UP);
+				if (y0 - screenY > controller.height() - 1) {
+					controller.drag(Direction.UP);
 					resetCoordinats(screenX, screenY);
-				} else if (Math.abs(y0 - screenY) > action.height()) {
-					action.drag(Direction.DOWN);
+				} else if (Math.abs(y0 - screenY) > controller.height() - 1) {
+					controller.drag(Direction.DOWN);
 					resetCoordinats(screenX, screenY);
 				}
 			}

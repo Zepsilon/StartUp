@@ -21,8 +21,8 @@ public class Button implements GameObject {
 		this.buttonImage = buttonImage;
 		this.xKord = xKord;
 		this.yKord = yKord;
-		width = 0;
-		height = 0;
+		width = 48;
+		height = 48;
 		maxWidth = 48; // degistirilebilir
 		maxHeight = 48; // degistirilebilir
 

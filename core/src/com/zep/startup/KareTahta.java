@@ -8,7 +8,6 @@ import com.zep.images.ImageLoader;
 import com.zep.inputhandler.ScoreHandler;
 import com.zep.sounds.MusicLoader;
 import com.zep.states.MenuState;
-import com.zep.states.PlayState;
 import com.zep.states.StateManager;
 
 public class KareTahta extends Game {
@@ -30,7 +29,6 @@ public class KareTahta extends Game {
 //        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 
 		ImageLoader.load(5);
-		MusicLoader.load();
 
         sb = new SpriteBatch();
         sm = new StateManager();

@@ -11,13 +11,16 @@ public class MusicLoader {
 //	private static Sound fxAdd;
 
 	public static void load() {
+		System.out.println("Music loading..");
 		music = Gdx.audio.newMusic(Gdx.files.internal("music/SpinCycle.mp3"));
 		fxRemove = Gdx.audio.newSound(Gdx.files.internal("music/remove.mp3"));
 	}
 
 	public static void dispose() {
-		music.dispose();
-		fxRemove.dispose();
+		if (music != null)
+			music.dispose();
+		if (fxRemove != null)
+			fxRemove.dispose();
 //		fxAdd.dispose();
 	}
 
@@ -26,24 +29,30 @@ public class MusicLoader {
 	}
 
 	public static void musicPlay(float volume, boolean loop) {
-		music.setVolume(volume); // sets the volume to half the maximum volume
-		music.setLooping(loop); // will repeat playback until music.stop() is called
-		music.play(); // resumes the playback
+		if (music != null) {
+			music.setVolume(volume); // sets the volume to half the maximum volume
+			music.setLooping(loop); // will repeat playback until music.stop() is called
+			music.play(); // resumes the playback
+		}
 	}
 
 	/**
 	 * isExtra parametresi true ise aynı anda birden cok satir ya da sutun silinmistir, ekstra effect gerekebilir
+	 * 
 	 * @param isExtra
 	 * @return
 	 */
 	public static long fxRemove(boolean isExtra) {
 		// TODO add exstra effect 
-		return fxRemove.play();
-//		return 0;
+		if (fxRemove != null)
+			return fxRemove.play();
+		return 0;
 	}
 
 	public static void musicStop() {
-		music.stop(); // stops the playback
+		System.out.println("Music stopping..");
+		if (music != null)
+			music.stop(); // stops the playback
 	}
 
 	/**
@@ -51,7 +60,8 @@ public class MusicLoader {
 	 * 
 	 */
 	public static void musicStopFx() {
-		music.stop();
+		if (music != null)
+			music.stop();
 		// fx icin sound calistir
 	}
 

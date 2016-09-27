@@ -6,12 +6,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class ImageLoader {
 
 	private static Texture txtrButtons;
-	public static TextureRegion	buttonNewGame;
-	public static TextureRegion	buttonSettings;
-	public static TextureRegion	buttonVolumeOn;
-	public static TextureRegion	buttonVolumeOff;
+	private static Texture txtrButtonsSlc;
+	public static TextureRegion	btnNewGame, btnNewGameSlc;
+	public static TextureRegion	btnSettings, btnSettingsSlc;
+	public static TextureRegion	btnVolumeOn, btnVolumeOnSlc;
+	public static TextureRegion	btnVolumeOff, btnVolumeOffSlc;
+	
 	private static Texture		txtrBkg;
 	public static TextureRegion	txtrRegBkg;
+	
 	private static Texture		txtrBtn;
 	public static TextureRegion	txtrRegBtn[];
 
@@ -20,14 +23,20 @@ public class ImageLoader {
 
 	public static void load(int size) {
 		txtrButtons = new Texture("buttons/menuButtons_Inner.png");
-		buttonNewGame = new TextureRegion(txtrButtons, 0, 0, 192, 192);
-		buttonNewGame.flip(false, true);
-		buttonSettings = new TextureRegion(txtrButtons, 192, 0, 192, 192);
-		buttonSettings.flip(false, true);
-		buttonVolumeOn = new TextureRegion(txtrButtons, 384, 0, 192, 192);
-		buttonVolumeOn.flip(false, true);
-		buttonVolumeOff = new TextureRegion(txtrButtons, 576, 0, 192, 192);
-		buttonVolumeOff.flip(false, true);
+		btnNewGame = new TextureRegion(txtrButtons, 0, 0, 192, 192);
+//		btnNewGame.flip(false, true);
+		btnSettings = new TextureRegion(txtrButtons, 192, 0, 192, 192);
+//		btnSettings.flip(false, true);
+		btnVolumeOn = new TextureRegion(txtrButtons, 384, 0, 192, 192);
+//		btnVolumeOn.flip(false, true);
+		btnVolumeOff = new TextureRegion(txtrButtons, 576, 0, 192, 192);
+//		btnVolumeOff.flip(false, true);
+
+		txtrButtonsSlc = new Texture("buttons/menuButtonsFrame.png");
+		btnNewGameSlc = new TextureRegion(txtrButtonsSlc, 0, 0, 192, 192);
+		btnSettingsSlc = new TextureRegion(txtrButtonsSlc, 192, 0, 192, 192);
+		btnVolumeOnSlc = new TextureRegion(txtrButtonsSlc, 384, 0, 192, 192);
+		btnVolumeOffSlc = new TextureRegion(txtrButtonsSlc, 576, 0, 192, 192);
 		
 		txtrBkg = new Texture("backround/backroundLightYear.png");
 		txtrRegBkg = new TextureRegion(txtrBkg);
@@ -53,6 +62,8 @@ public class ImageLoader {
 	public static void dispose() {
 		txtrBtn.dispose();
 		txtrBkg.dispose();
+		txtrButtons.dispose();
+		txtrButtonsSlc.dispose();
 	}
 
 }

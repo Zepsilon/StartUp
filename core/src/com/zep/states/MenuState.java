@@ -10,6 +10,9 @@ public class MenuState extends State {
 
 	private StateManager	sm;
 	private Button			buttonNewGame, buttonSettings, buttonVolumeOn, buttonVolumeOff;
+	private Button			buttonNewGameSlc, buttonSettingsSlc, buttonVolumeOnSlc, buttonVolumeOffSlc;
+	private Button			buttonNewGamePsv, buttonSettingsPsv, buttonVolumeOnPsv, buttonVolumeOffPsv;
+	private boolean			isSlcNewGame, isSlcSettings, isSlcVolume;
 
 	private float			buttonX;
 	private float			buttonY;
@@ -17,16 +20,27 @@ public class MenuState extends State {
 	public MenuState(StateManager sm) {
 		super(sm);
 
+		isSlcNewGame = isSlcSettings = isSlcVolume = false;
+
 		this.sm = sm;
 		buttonX = Gdx.graphics.getWidth() / 6;
 		buttonY = Gdx.graphics.getHeight() / 2;
+		buttonNewGamePsv = new Button(buttonX, buttonY, ImageLoader.btnNewGame);
+		buttonSettingsPsv = new Button(buttonX * 2, buttonY, ImageLoader.btnSettings);
+		buttonVolumeOnPsv = new Button(buttonX * 3, buttonY, ImageLoader.btnVolumeOn);
+		buttonVolumeOffPsv = new Button(buttonX * 4, buttonY, ImageLoader.btnVolumeOff);
+
+		buttonNewGameSlc = new Button(buttonX, buttonY, ImageLoader.btnNewGameSlc);
+		buttonSettingsSlc = new Button(buttonX * 2, buttonY, ImageLoader.btnSettingsSlc);
+		buttonVolumeOnSlc = new Button(buttonX * 3, buttonY, ImageLoader.btnVolumeOnSlc);
+		buttonVolumeOffSlc = new Button(buttonX * 4, buttonY, ImageLoader.btnVolumeOffSlc);
+
+		buttonNewGame = buttonNewGamePsv;
+		buttonSettings = buttonSettingsPsv;
+		buttonVolumeOn = buttonVolumeOnPsv;
+		buttonVolumeOff = buttonVolumeOffPsv;
 
 		Gdx.input.setInputProcessor(new MenuStateInput(this));
-		buttonNewGame = new Button(buttonX, buttonY,ImageLoader.buttonNewGame);
-		buttonSettings = new Button(buttonX*2,buttonY, ImageLoader.buttonSettings);
-		buttonVolumeOn = new Button(buttonX*3, buttonY, ImageLoader.buttonVolumeOn);
-		buttonVolumeOff = new Button(buttonX*4, buttonY, ImageLoader.buttonVolumeOff);
-
 	}
 
 	@Override
@@ -39,6 +53,7 @@ public class MenuState extends State {
 		sb.draw(ImageLoader.txtrRegBkg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		sb.end();
+
 		buttonNewGame.render(sb);
 		buttonSettings.render(sb);
 		buttonVolumeOn.render(sb);
@@ -94,6 +109,48 @@ public class MenuState extends State {
 
 	public void setButtonVolumeOff(Button buttonVolumeOff) {
 		this.buttonVolumeOff = buttonVolumeOff;
+	}
+
+	public boolean isSlcNewGame() {
+		return isSlcNewGame;
+	}
+
+	public void setSlcNewGame(boolean isSlcNewGame) {
+		this.isSlcNewGame = isSlcNewGame;
+		buttonNewGame = isSlcNewGame ? buttonNewGameSlc : buttonNewGamePsv;
+	}
+
+	public void switchSlcNewGame() {
+		this.isSlcNewGame = !isSlcNewGame;
+		setSlcNewGame(isSlcNewGame);
+	}
+
+	public boolean isSlcSettings() {
+		return isSlcSettings;
+	}
+
+	public void setSlcSettings(boolean isSlcSettings) {
+		this.isSlcSettings = isSlcSettings;
+		buttonSettings = isSlcSettings ? buttonSettingsSlc : buttonSettingsPsv;
+	}
+
+	public void switchSlcSettings() {
+		this.isSlcSettings = !isSlcSettings;
+		setSlcSettings(isSlcSettings);
+	}
+
+	public boolean isSlcVolume() {
+		return isSlcVolume;
+	}
+
+	public void setSlcVolume(boolean isSlcVolume) {
+		this.isSlcVolume = isSlcVolume;
+		buttonVolumeOn = isSlcVolume ? buttonVolumeOnSlc : buttonVolumeOnPsv;
+	}
+
+	public void switchSlcVolume() {
+		this.isSlcVolume = !isSlcVolume;
+		setSlcVolume(isSlcVolume);
 	}
 
 }

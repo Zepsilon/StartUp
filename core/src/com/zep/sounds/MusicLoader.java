@@ -28,7 +28,7 @@ public class MusicLoader {
 	public static void musicPlay(float volume, boolean loop) {
 		music.setVolume(volume); // sets the volume to half the maximum volume
 		music.setLooping(loop); // will repeat playback until music.stop() is called
-//		music.play(); // resumes the playback
+		music.play(); // resumes the playback
 	}
 
 	/**
@@ -38,8 +38,8 @@ public class MusicLoader {
 	 */
 	public static long fxRemove(boolean isExtra) {
 		// TODO add exstra effect 
-//		return fxRemove.play();
-		return 0;
+		return fxRemove.play();
+//		return 0;
 	}
 
 	public static void musicStop() {

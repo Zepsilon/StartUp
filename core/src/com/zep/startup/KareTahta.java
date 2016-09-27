@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zep.images.ImageLoader;
 import com.zep.inputhandler.ScoreHandler;
 import com.zep.sounds.MusicLoader;
+import com.zep.states.MenuState;
 import com.zep.states.PlayState;
 import com.zep.states.StateManager;
 
@@ -34,8 +35,7 @@ public class KareTahta extends Game {
         sb = new SpriteBatch();
         sm = new StateManager();
 
-//        state = new PlayState(sm);
-        sm.pushState(new PlayState(sm));
+        sm.pushState(new MenuState(sm)); //(new PlayState(sm));
         System.out.println("Yaratildi..");
     }
 

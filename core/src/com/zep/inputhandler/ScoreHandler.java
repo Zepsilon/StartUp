@@ -53,7 +53,8 @@ public class ScoreHandler {
 	}
 
 	public static void dispose() {
-		font.dispose();
+		if (font != null)
+			font.dispose();
 	}
 
 	public int getScore(int destroyed) {

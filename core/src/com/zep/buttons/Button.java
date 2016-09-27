@@ -1,10 +1,8 @@
 package com.zep.buttons;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.zep.images.ImageLoader;
 import com.zep.object.GameObject;
 
 public class Button implements GameObject {
@@ -25,21 +23,8 @@ public class Button implements GameObject {
 		this.yKord = yKord;
 		width = 0;
 		height = 0;
-		maxWidth = (Gdx.graphics.getWidth() * 2) / 3;
-		maxHeight = (float) (maxWidth * 0.2);
-
-		buttonRect = new Rectangle(xKord, yKord, width, height);
-	}
-
-	public Button() {
-		this.xKord = 0;
-
-//		buttonImage = ImageLoader.backButton;
-		width = 0;
-		height = 0;
-		this.maxWidth = (Gdx.graphics.getWidth()) / 3;
-		this.maxHeight = (float) (maxWidth * 0.4);
-		this.yKord = Gdx.graphics.getHeight() - maxHeight;
+		maxWidth = 48; // degistirilebilir
+		maxHeight = 48; // degistirilebilir
 
 		buttonRect = new Rectangle(xKord, yKord, width, height);
 	}

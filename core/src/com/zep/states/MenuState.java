@@ -2,14 +2,14 @@ package com.zep.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zep.buttons.Button;
+import com.zep.images.ImageLoader;
+import com.zep.inputhandler.MenuStateInput;
 
 public class MenuState extends State {
 
 	private StateManager	sm;
-	private ShapeRenderer	sr;
-	private Button			playButton, optionsButton, highScoreButton;
+	private Button			buttonNewGame, buttonSettings, buttonVolumeOn, buttonVolumeOff;
 
 	private float			buttonX;
 	private float			buttonY;
@@ -17,39 +17,41 @@ public class MenuState extends State {
 	public MenuState(StateManager sm) {
 		super(sm);
 
-		sr = new ShapeRenderer();
 		this.sm = sm;
 		buttonX = Gdx.graphics.getWidth() / 6;
-		buttonY = Gdx.graphics.getHeight() / 4;
+		buttonY = Gdx.graphics.getHeight() / 2;
 
-//		Gdx.input.setInputProcessor(new MenuStateInput(this));
-//		playButton = new Button(buttonX, buttonY,ImageLoader.playButtonRegion);
-//		optionsButton = new Button(buttonX,buttonY*2, ImageLoader.options);
-//		aboutButton = new Button(buttonX, buttonY*3, ImageLoader.about);
+		Gdx.input.setInputProcessor(new MenuStateInput(this));
+		buttonNewGame = new Button(buttonX, buttonY,ImageLoader.buttonNewGame);
+		buttonSettings = new Button(buttonX*2,buttonY, ImageLoader.buttonSettings);
+		buttonVolumeOn = new Button(buttonX*3, buttonY, ImageLoader.buttonVolumeOn);
+		buttonVolumeOff = new Button(buttonX*4, buttonY, ImageLoader.buttonVolumeOff);
 
 	}
 
 	@Override
 	public void render(SpriteBatch sb) {
 
-		//butonlar cizdirilcek.
+//		//butonlar cizdirilcek.
 		sb.setProjectionMatrix(camera.combined);
 		sb.begin();
 
-//		sb.draw(ImageLoader.bgRegion, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		sb.draw(ImageLoader.txtrRegBkg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		sb.end();
-//		playButton.render(sb);
-//		optionsButton.render(sb);
-//		aboutButton.render(sb);
+		buttonNewGame.render(sb);
+		buttonSettings.render(sb);
+		buttonVolumeOn.render(sb);
+		buttonVolumeOff.render(sb);
 	}
 
 	@Override
 	public void update(float delta) {
 
-//		playButton.update(delta);
-//		optionsButton.update(delta);
-//		aboutButton.update(delta);
+		buttonNewGame.update(delta);
+		buttonSettings.update(delta);
+		buttonVolumeOn.update(delta);
+		buttonVolumeOff.update(delta);
 
 	}
 
@@ -62,33 +64,36 @@ public class MenuState extends State {
 		return sm;
 	}
 
-//	public Button getPlayButton() {
-//		return playButton;
-//	}
-//
-//
-//	public void setPlayButton(Button playButton) {
-//		this.playButton = playButton;
-//	}
-//
-//
-//	public Button getOptionsButton() {
-//		return optionsButton;
-//	}
-//
-//
-//	public void setOptionsButton(Button optionsButton) {
-//		this.optionsButton = optionsButton;
-//	}
-//
-//
-//	public Button getAboutButton() {
-//		return aboutButton;
-//	}
-//
-//
-//	public void setAboutButton(Button aboutButton) {
-//		this.aboutButton = aboutButton;
-//	}
+	public Button getButtonNewGame() {
+		return buttonNewGame;
+	}
+
+	public void setButtonNewGame(Button buttonNewGame) {
+		this.buttonNewGame = buttonNewGame;
+	}
+
+	public Button getButtonSettings() {
+		return buttonSettings;
+	}
+
+	public void setButtonSettings(Button buttonSettings) {
+		this.buttonSettings = buttonSettings;
+	}
+
+	public Button getButtonVolumeOn() {
+		return buttonVolumeOn;
+	}
+
+	public void setButtonVolumeOn(Button buttonVolumeOn) {
+		this.buttonVolumeOn = buttonVolumeOn;
+	}
+
+	public Button getButtonVolumeOff() {
+		return buttonVolumeOff;
+	}
+
+	public void setButtonVolumeOff(Button buttonVolumeOff) {
+		this.buttonVolumeOff = buttonVolumeOff;
+	}
 
 }

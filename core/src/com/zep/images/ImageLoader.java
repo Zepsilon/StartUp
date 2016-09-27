@@ -19,15 +19,19 @@ public class ImageLoader {
 	private static int			width, height, gap;
 
 	public static void load(int size) {
-		txtrButtons = new Texture("buttons/menuButtons.png");
+		txtrButtons = new Texture("buttons/menuButtons_Inner.png");
 		buttonNewGame = new TextureRegion(txtrButtons, 0, 0, 192, 192);
+		buttonNewGame.flip(false, true);
 		buttonSettings = new TextureRegion(txtrButtons, 192, 0, 192, 192);
+		buttonSettings.flip(false, true);
 		buttonVolumeOn = new TextureRegion(txtrButtons, 384, 0, 192, 192);
+		buttonVolumeOn.flip(false, true);
 		buttonVolumeOff = new TextureRegion(txtrButtons, 576, 0, 192, 192);
+		buttonVolumeOff.flip(false, true);
 		
-		txtrBkg = new Texture("backround/backroundNeverAlone.png");
+		txtrBkg = new Texture("backround/backroundLightYear.png");
 		txtrRegBkg = new TextureRegion(txtrBkg);
-		txtrRegBkg.flip(false, true);
+//		txtrRegBkg.flip(false, true);
 
 		txtrBtn = new Texture("buttons/Buttons_WHT.png");
 		txtrRegBtn = new TextureRegion[size];

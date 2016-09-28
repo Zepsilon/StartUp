@@ -9,6 +9,8 @@ import com.zep.inputhandler.ScoreHandler;
 import com.zep.sounds.MusicLoader;
 import com.zep.states.MenuState;
 import com.zep.states.StateManager;
+import com.zep.util.Constant;
+import com.zep.util.Util;
 
 public class KareTahta extends Game {
 	
@@ -24,17 +26,22 @@ public class KareTahta extends Game {
 
     @Override
     public void create() {
-
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // This cryptic line clears the screen.
 //        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 
 		ImageLoader.load(5);
+		Util.load();
+		MusicLoader.load(); // sistemsel olarak yukle, her seferinde sormasın
+		
 
         sb = new SpriteBatch();
         sm = new StateManager();
 
         sm.pushState(new MenuState(sm)); //(new PlayState(sm));
         System.out.println("Yaratildi..");
+        System.out.println("Language: "+java.util.Locale.getDefault().toString());
+        System.out.println(Util.Bundle.getText("title.newGame"));
+        System.out.println(Util.Prefs.getValue(Constant.PREF_HIGH_SCORE));
     }
 
     @Override

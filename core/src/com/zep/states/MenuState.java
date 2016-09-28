@@ -1,44 +1,51 @@
 package com.zep.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zep.buttons.Button;
 import com.zep.images.ImageLoader;
 import com.zep.inputhandler.MenuStateInput;
+import com.zep.util.Util;
 
 public class MenuState extends State {
 
-	private StateManager	sm;
-	private Button			buttonNewGame, buttonSettings, buttonVolumeOn, buttonVolumeOff;
-	private Button			buttonNewGameSlc, buttonSettingsSlc, buttonVolumeOnSlc, buttonVolumeOffSlc;
-	private Button			buttonNewGamePsv, buttonSettingsPsv, buttonVolumeOnPsv, buttonVolumeOffPsv;
-	private boolean			isSlcNewGame, isSlcSettings, isSlcVolume;
+	private StateManager		sm;
+	private Button				buttonNewGame, buttonSettings, buttonVolumeOn, buttonVolumeOff;
+	private Button				buttonNewGameSlc, buttonSettingsSlc, buttonVolumeOnSlc;
+	private Button				buttonNewGamePsv, buttonSettingsPsv, buttonVolumeOnPsv;
+	private boolean				isSlcNewGame, isSlcSettings, isSlcVolume;
 
-	private float			buttonX;
-	private float			buttonY;
+	private static BitmapFont	fontButton;
+
+	private float				buttonX;
+	private float				buttonY;
 
 	public MenuState(StateManager sm) {
 		super(sm);
 
-		isSlcNewGame = isSlcSettings = isSlcVolume = false;
+		isSlcNewGame = isSlcSettings = isSlcVolume = false; // default seçimler
 
 		this.sm = sm;
-		buttonX = Gdx.graphics.getWidth() / 6;
-		buttonY = Gdx.graphics.getHeight() / 2;
-		buttonNewGamePsv = new Button(buttonX, buttonY, ImageLoader.btnNewGame);
-		buttonSettingsPsv = new Button(buttonX * 2, buttonY, ImageLoader.btnSettings);
-		buttonVolumeOnPsv = new Button(buttonX * 3, buttonY, ImageLoader.btnVolumeOn);
-		buttonVolumeOffPsv = new Button(buttonX * 4, buttonY, ImageLoader.btnVolumeOff);
 
-		buttonNewGameSlc = new Button(buttonX, buttonY, ImageLoader.btnNewGameSlc);
-		buttonSettingsSlc = new Button(buttonX * 2, buttonY, ImageLoader.btnSettingsSlc);
-		buttonVolumeOnSlc = new Button(buttonX * 3, buttonY, ImageLoader.btnVolumeOnSlc);
-		buttonVolumeOffSlc = new Button(buttonX * 4, buttonY, ImageLoader.btnVolumeOffSlc);
+		buttonX = Gdx.graphics.getWidth() / 4;
+		buttonY = 2 * (Gdx.graphics.getHeight() / 3);
+
+		fontButton = new BitmapFont(true);
+		fontButton.setColor(Color.WHITE);
+
+		buttonNewGamePsv = new Button(buttonX - 24, buttonY, ImageLoader.btnNewGame, fontButton, Util.Bundle.getText("title.newGame"));
+		buttonSettingsPsv = new Button(buttonX * 2 - 24, buttonY, ImageLoader.btnSettings, fontButton, Util.Bundle.getText("title.settings"));
+		buttonVolumeOnPsv = new Button(buttonX * 3 - 24, buttonY, ImageLoader.btnVolumeOn, fontButton, Util.Bundle.getText("title.volume"));
+
+		buttonNewGameSlc = new Button(buttonX - 24, buttonY, ImageLoader.btnNewGameSlc, fontButton, Util.Bundle.getText("title.newGame"));
+		buttonSettingsSlc = new Button(buttonX * 2 - 24, buttonY, ImageLoader.btnSettingsSlc, fontButton, Util.Bundle.getText("title.settings"));
+		buttonVolumeOnSlc = new Button(buttonX * 3 - 24, buttonY, ImageLoader.btnVolumeOnSlc, fontButton, Util.Bundle.getText("title.volume"));
 
 		buttonNewGame = buttonNewGamePsv;
 		buttonSettings = buttonSettingsPsv;
 		buttonVolumeOn = buttonVolumeOnPsv;
-		buttonVolumeOff = buttonVolumeOffPsv;
 
 		Gdx.input.setInputProcessor(new MenuStateInput(this));
 	}
@@ -57,7 +64,6 @@ public class MenuState extends State {
 		buttonNewGame.render(sb);
 		buttonSettings.render(sb);
 		buttonVolumeOn.render(sb);
-		buttonVolumeOff.render(sb);
 	}
 
 	@Override
@@ -66,7 +72,6 @@ public class MenuState extends State {
 		buttonNewGame.update(delta);
 		buttonSettings.update(delta);
 		buttonVolumeOn.update(delta);
-		buttonVolumeOff.update(delta);
 
 	}
 
@@ -151,6 +156,11 @@ public class MenuState extends State {
 	public void switchSlcVolume() {
 		this.isSlcVolume = !isSlcVolume;
 		setSlcVolume(isSlcVolume);
+	}
+
+	public static void dispose() {
+		if (fontButton != null)
+			fontButton.dispose();
 	}
 
 }

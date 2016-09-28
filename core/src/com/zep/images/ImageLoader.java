@@ -29,14 +29,14 @@ public class ImageLoader {
 //		btnSettings.flip(false, true);
 		btnVolumeOn = new TextureRegion(txtrButtons, 384, 0, 192, 192);
 //		btnVolumeOn.flip(false, true);
-		btnVolumeOff = new TextureRegion(txtrButtons, 576, 0, 192, 192);
+//		btnVolumeOff = new TextureRegion(txtrButtons, 576, 0, 192, 192);
 //		btnVolumeOff.flip(false, true);
 
 		txtrButtonsSlc = new Texture("buttons/menuButtonsFrame.png");
 		btnNewGameSlc = new TextureRegion(txtrButtonsSlc, 0, 0, 192, 192);
 		btnSettingsSlc = new TextureRegion(txtrButtonsSlc, 192, 0, 192, 192);
-		btnVolumeOnSlc = new TextureRegion(txtrButtonsSlc, 384, 0, 192, 192);
-		btnVolumeOffSlc = new TextureRegion(txtrButtonsSlc, 576, 0, 192, 192);
+		btnVolumeOnSlc = new TextureRegion(txtrButtonsSlc, 576, 0, 192, 192);
+//		btnVolumeOffSlc = new TextureRegion(txtrButtonsSlc, 576, 0, 192, 192);
 		
 		txtrBkg = new Texture("backround/backroundLightYear.png");
 		txtrRegBkg = new TextureRegion(txtrBkg);

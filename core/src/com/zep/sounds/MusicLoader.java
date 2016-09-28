@@ -19,8 +19,10 @@ public class MusicLoader {
 	public static void dispose() {
 		if (music != null)
 			music.dispose();
+		music = null;
 		if (fxRemove != null)
 			fxRemove.dispose();
+		fxRemove = null;
 //		fxAdd.dispose();
 	}
 

@@ -1,19 +1,18 @@
 package com.zep.inputhandler;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.zep.util.Constant;
+import com.zep.util.Util;
 
 /*
  * Score Mantığı: score = timer.delay - gecenZaman + (max kare sayisi - yok edilen kare sayisi) * multiplier multiplier degeri zorluk arttikca artacak
  */
 public class ScoreHandler {
 
-	private Preferences			pref;
 	private int					score;
 	private int					multiplier;
 	private int					highScore;
@@ -24,14 +23,13 @@ public class ScoreHandler {
 	private int					moveCount;	// hamle sayisi
 
 	public ScoreHandler(PlayTimerHandler timer, int multiplier, int maxSqSize) {
-		pref = Gdx.app.getPreferences("ZePSquare");
 		moveCount = 0;
 		this.timer = timer;
 		this.multiplier = multiplier;
 		this.maxSquare = maxSqSize;
 
 		score = 0;
-		highScore = pref.getInteger(Constant.HIGH_SCORE, score);
+		highScore = (Integer) Util.Prefs.getValue(Constant.PREF_HIGH_SCORE, score);
 
 		font = new BitmapFont(true);
 		font.setColor(Color.WHITE);
@@ -64,7 +62,7 @@ public class ScoreHandler {
 
 	public int getScore() {
 		if (highScore < score) {
-			pref.putInteger(Constant.HIGH_SCORE, score);
+			Util.Prefs.putValue(Constant.PREF_HIGH_SCORE, score);
 		}
 
 		return score;
@@ -79,7 +77,7 @@ public class ScoreHandler {
 	}
 
 	public int getHighScore() {
-		highScore = pref.getInteger(Constant.HIGH_SCORE, 0);
+		highScore = (Integer) Util.Prefs.getValue(Constant.PREF_HIGH_SCORE, 0);
 		return highScore;
 	}
 

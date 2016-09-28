@@ -41,7 +41,7 @@ public class KareTahta extends Game {
         System.out.println("Yaratildi..");
         System.out.println("Language: "+java.util.Locale.getDefault().toString());
         System.out.println(Util.Bundle.getText("title.newGame"));
-        System.out.println(Util.Prefs.getValue(Constant.PREF_HIGH_SCORE));
+        System.out.println("HighScore: "+Util.Prefs.getValue(Constant.PREF_HIGH_SCORE));
     }
 
     @Override

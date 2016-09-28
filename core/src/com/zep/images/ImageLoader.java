@@ -22,7 +22,7 @@ public class ImageLoader {
 	private static int			width, height, gap;
 
 	public static void load(int size) {
-		txtrButtons = new Texture("buttons/menuButtons_Inner.png");
+		txtrButtons = new Texture("buttons/menuButtons_InnerFrame.png");
 		btnNewGame = new TextureRegion(txtrButtons, 0, 0, 192, 192);
 //		btnNewGame.flip(false, true);
 		btnSettings = new TextureRegion(txtrButtons, 192, 0, 192, 192);

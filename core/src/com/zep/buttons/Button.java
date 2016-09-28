@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Align;
 import com.zep.object.GameObject;
 
 public class Button implements GameObject {
@@ -41,7 +42,7 @@ public class Button implements GameObject {
 		sb.begin();
 
 		sb.draw(buttonImage, xKord, yKord, width, height);
-		font.draw(sb, text, xKord, yKord + 55);
+		font.draw(sb, text, xKord, yKord + 55, width, Align.center, true);
 
 		sb.end();
 

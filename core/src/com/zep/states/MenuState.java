@@ -7,15 +7,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.zep.buttons.Button;
 import com.zep.images.ImageLoader;
 import com.zep.inputhandler.MenuStateInput;
+import com.zep.util.Constant;
 import com.zep.util.Util;
 
 public class MenuState extends State {
 
 	private StateManager		sm;
-	private Button				buttonNewGame, buttonSettings, buttonVolumeOn, buttonVolumeOff;
-	private Button				buttonNewGameSlc, buttonSettingsSlc, buttonVolumeOnSlc;
-	private Button				buttonNewGamePsv, buttonSettingsPsv, buttonVolumeOnPsv;
-	private boolean				isSlcNewGame, isSlcSettings, isSlcVolume;
+	private Button				buttonNewGame, buttonLanguage, buttonVolumeOn, buttonVolumeOff;
+	private Button				buttonNewGameSlc, buttonLanguageSlc, buttonVolumeOnSlc;
+	private Button				buttonNewGamePsv, buttonLanguagePsv, buttonVolumeOnPsv;
+	private boolean				isSlcNewGame, isSlcLanguage, isSlcVolume;
 
 	private static BitmapFont	fontButton;
 
@@ -25,27 +26,29 @@ public class MenuState extends State {
 	public MenuState(StateManager sm) {
 		super(sm);
 
-		isSlcNewGame = isSlcSettings = isSlcVolume = false; // default seçimler
+		isSlcNewGame = isSlcLanguage = false; // default seçimler
 
 		this.sm = sm;
 
 		buttonX = Gdx.graphics.getWidth() / 4;
-		buttonY = 2 * (Gdx.graphics.getHeight() / 3);
+		buttonY = Gdx.graphics.getHeight() / 6;
 
 		fontButton = new BitmapFont(true);
 		fontButton.setColor(Color.WHITE);
 
-		buttonNewGamePsv = new Button(buttonX - 24, buttonY, ImageLoader.btnNewGame, fontButton, Util.Bundle.getText("title.newGame"));
-		buttonSettingsPsv = new Button(buttonX * 2 - 24, buttonY, ImageLoader.btnSettings, fontButton, Util.Bundle.getText("title.settings"));
-		buttonVolumeOnPsv = new Button(buttonX * 3 - 24, buttonY, ImageLoader.btnVolumeOn, fontButton, Util.Bundle.getText("title.volume"));
+		buttonNewGamePsv = new Button(buttonX * 2 - 24, buttonY * 3, ImageLoader.btnNewGame, fontButton, Util.Bundle.getText("title.newGame"));
+		buttonLanguagePsv = new Button(buttonX * 1 - 24, buttonY * 4, ImageLoader.btnLanguage, fontButton, Util.Bundle.getText("title.language"));
+		buttonVolumeOnPsv = new Button(buttonX * 3 - 24, buttonY * 4, ImageLoader.btnVolumeOn, fontButton, Util.Bundle.getText("title.volume"));
 
-		buttonNewGameSlc = new Button(buttonX - 24, buttonY, ImageLoader.btnNewGameSlc, fontButton, Util.Bundle.getText("title.newGame"));
-		buttonSettingsSlc = new Button(buttonX * 2 - 24, buttonY, ImageLoader.btnSettingsSlc, fontButton, Util.Bundle.getText("title.settings"));
-		buttonVolumeOnSlc = new Button(buttonX * 3 - 24, buttonY, ImageLoader.btnVolumeOnSlc, fontButton, Util.Bundle.getText("title.volume"));
+		buttonNewGameSlc = new Button(buttonX * 2 - 24, buttonY * 3, ImageLoader.btnNewGameSlc, fontButton, Util.Bundle.getText("title.newGame"));
+		buttonLanguageSlc = new Button(buttonX * 1 - 24, buttonY * 4, ImageLoader.btnLanguageSlc, fontButton, Util.Bundle.getText("title.language"));
+		buttonVolumeOnSlc = new Button(buttonX * 3 - 24, buttonY * 4, ImageLoader.btnVolumeOnSlc, fontButton, Util.Bundle.getText("title.volume"));
 
 		buttonNewGame = buttonNewGamePsv;
-		buttonSettings = buttonSettingsPsv;
+		buttonLanguage = buttonLanguagePsv;
 		buttonVolumeOn = buttonVolumeOnPsv;
+		
+		setSlcVolume(!(Boolean) Util.Prefs.getValue(Constant.PREF_VOLUME, true));
 
 		Gdx.input.setInputProcessor(new MenuStateInput(this));
 	}
@@ -62,7 +65,7 @@ public class MenuState extends State {
 		sb.end();
 
 		buttonNewGame.render(sb);
-		buttonSettings.render(sb);
+		buttonLanguage.render(sb);
 		buttonVolumeOn.render(sb);
 	}
 
@@ -70,7 +73,7 @@ public class MenuState extends State {
 	public void update(float delta) {
 
 		buttonNewGame.update(delta);
-		buttonSettings.update(delta);
+		buttonLanguage.update(delta);
 		buttonVolumeOn.update(delta);
 
 	}
@@ -92,12 +95,12 @@ public class MenuState extends State {
 		this.buttonNewGame = buttonNewGame;
 	}
 
-	public Button getButtonSettings() {
-		return buttonSettings;
+	public Button getButtonLanguage() {
+		return buttonLanguage;
 	}
 
 	public void setButtonSettings(Button buttonSettings) {
-		this.buttonSettings = buttonSettings;
+		this.buttonLanguage = buttonSettings;
 	}
 
 	public Button getButtonVolumeOn() {
@@ -130,18 +133,18 @@ public class MenuState extends State {
 		setSlcNewGame(isSlcNewGame);
 	}
 
-	public boolean isSlcSettings() {
-		return isSlcSettings;
+	public boolean isSlclanguage() {
+		return isSlcLanguage;
 	}
 
-	public void setSlcSettings(boolean isSlcSettings) {
-		this.isSlcSettings = isSlcSettings;
-		buttonSettings = isSlcSettings ? buttonSettingsSlc : buttonSettingsPsv;
+	public void setSlcLanguage(boolean isSlclanguage) {
+		this.isSlcLanguage = isSlclanguage;
+		buttonLanguage = isSlclanguage ? buttonLanguageSlc : buttonLanguagePsv;
 	}
 
-	public void switchSlcSettings() {
-		this.isSlcSettings = !isSlcSettings;
-		setSlcSettings(isSlcSettings);
+	public void switchSlclanguage() {
+		this.isSlcLanguage = !isSlcLanguage;
+		setSlcLanguage(isSlcLanguage);
 	}
 
 	public boolean isSlcVolume() {

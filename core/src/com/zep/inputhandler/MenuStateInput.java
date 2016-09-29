@@ -47,7 +47,7 @@ public class MenuStateInput implements InputProcessor {
 			justSelected = true;
 			System.out.println("NewGame selected " + slcNewGame);
 		}
-		if (menuState.getButtonSettings().getButtonRect().contains(screenX, screenY)) {
+		if (menuState.getButtonLanguage().getButtonRect().contains(screenX, screenY)) {
 			slcSettings = !slcSettings;
 			justSelected = true;
 			System.out.println("Settings selected " + slcSettings);
@@ -63,7 +63,7 @@ public class MenuStateInput implements InputProcessor {
 				MusicLoader.musicStop();
 				MusicLoader.dispose();
 			}
-			
+
 			Util.Prefs.putValue(Constant.PREF_VOLUME, isVolumeOn);
 		}
 
@@ -91,10 +91,10 @@ public class MenuStateInput implements InputProcessor {
 			menuState.setSlcNewGame(!slcNewGame);
 		}
 
-		if (menuState.getButtonSettings().getButtonRect().contains(screenX, screenY) && !justSelected) {
-			menuState.setSlcSettings(slcSettings);
+		if (menuState.getButtonLanguage().getButtonRect().contains(screenX, screenY) && !justSelected) {
+			menuState.setSlcLanguage(slcSettings);
 		} else {
-			menuState.setSlcSettings(!slcSettings);
+			menuState.setSlcLanguage(!slcSettings);
 		}
 
 		if (menuState.getButtonVolumeOn().getButtonRect().contains(screenX, screenY) && !justSelected) {
@@ -104,7 +104,7 @@ public class MenuStateInput implements InputProcessor {
 		}
 
 		if (!menuState.getButtonNewGame().getButtonRect().contains(screenX, screenY)
-				&& !menuState.getButtonSettings().getButtonRect().contains(screenX, screenY)
+				&& !menuState.getButtonLanguage().getButtonRect().contains(screenX, screenY)
 				&& !menuState.getButtonVolumeOn().getButtonRect().contains(screenX, screenY)) {
 			justSelected = false;
 		}

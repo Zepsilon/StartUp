@@ -3,8 +3,9 @@ package com.zep.util;
 public class Constant {
 
 	public static final String	PREF_NAME		= "ZePSquare";
-	public static final String	PREF_HIGH_SCORE	= "HighScore";
-	public static final String	PREF_VOLUME		= "Volume";
+	public static final String	PREF_HIGH_SCORE	= "HIGHSCORE";
+	public static final String	PREF_VOLUME		= "VOLUME";
+	public static final String	PREF_LANG		= "LANG";
 
 	public static int			MULTIPLIER		= 2;
 

@@ -42,7 +42,7 @@ public class Button implements GameObject {
 		sb.begin();
 
 		sb.draw(buttonImage, xKord, yKord, width, height);
-		font.draw(sb, text, xKord, yKord + 55, width, Align.center, true);
+		font.draw(sb, text, xKord, yKord + 55, width, Align.center, false);
 
 		sb.end();
 

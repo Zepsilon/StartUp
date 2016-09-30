@@ -10,6 +10,7 @@ import com.zep.sounds.MusicLoader;
 import com.zep.states.MenuState;
 import com.zep.states.StateManager;
 import com.zep.util.Constant;
+import com.zep.util.SkinLoader;
 import com.zep.util.Util;
 
 public class KareTahta extends Game {
@@ -40,7 +41,7 @@ public class KareTahta extends Game {
         sm.pushState(new MenuState(sm)); //(new PlayState(sm));
         System.out.println("Yaratildi..");
         System.out.println("Language: "+java.util.Locale.getDefault().toString());
-        System.out.println(Util.Bundle.getText("title.newGame"));
+        System.out.println(Util.Bundle.getText("button.newGame"));
         System.out.println("HighScore: "+Util.Prefs.getValue(Constant.PREF_HIGH_SCORE));
     }
 
@@ -64,6 +65,7 @@ public class KareTahta extends Game {
         ImageLoader.dispose();
         MusicLoader.dispose();
         ScoreHandler.dispose();
+        SkinLoader.dispose();
         System.out.println("Yok edildi...");
 
     }

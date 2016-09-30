@@ -47,12 +47,25 @@ public class MenuStateInput implements InputProcessor {
 			justSelected = true;
 			System.out.println("NewGame selected " + slcNewGame);
 		}
+		
 		if (menuState.getButtonLanguage().getButtonRect().contains(screenX, screenY)) {
 			slcSettings = !slcSettings;
 			justSelected = true;
+
+			if ("tr_TR".equals(Util.Prefs.getValue(Constant.PREF_LANG))) {
+				Util.Prefs.putValue(Constant.PREF_LANG, "en_EN");
+				Util.load();
+				menuState.getSm().pushState(new MenuState(menuState.getSm()));
+			} else {
+				Util.Prefs.putValue(Constant.PREF_LANG, "tr_TR");
+				Util.load();
+				menuState.getSm().pushState(new MenuState(menuState.getSm()));
+			}
+			
 			System.out.println("Settings selected " + slcSettings);
 
 		}
+		
 		if (menuState.getButtonVolumeOn().getButtonRect().contains(screenX, screenY)) {
 			isVolumeOn = !isVolumeOn;
 			justSelected = true;

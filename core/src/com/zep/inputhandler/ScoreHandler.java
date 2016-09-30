@@ -61,10 +61,6 @@ public class ScoreHandler {
 	}
 
 	public int getScore() {
-		if (highScore < score) {
-			Util.Prefs.putValue(Constant.PREF_HIGH_SCORE, score);
-		}
-
 		return score;
 	}
 
@@ -77,8 +73,14 @@ public class ScoreHandler {
 	}
 
 	public int getHighScore() {
-		highScore = (Integer) Util.Prefs.getValue(Constant.PREF_HIGH_SCORE, 0);
+//		highScore = (Integer) Util.Prefs.getValue(Constant.PREF_HIGH_SCORE, 0);
 		return highScore;
+	}
+
+	public void setHighScore(int highScore) {
+		if (highScore > this.highScore) {
+			Util.Prefs.putValue(Constant.PREF_HIGH_SCORE, score);
+		}
 	}
 
 	public int getMoveCount() {

@@ -9,26 +9,26 @@ import com.zep.object.GameObject;
 
 public class Button implements GameObject {
 
-	private TextureRegion		buttonImage;
-	private float				xKord, yKord, width, height;
+	private TextureRegion	buttonImage;
+	private float			xKord, yKord, width, height;
 
-	private float				maxWidth, maxHeight;
+	private float			maxWidth, maxHeight;
 
-	private Rectangle			buttonRect;
-	private BitmapFont	font;
-	
-	private String				text;
+	private Rectangle		buttonRect;
+	private BitmapFont		font;
 
-	private float				time		= 0;
-	private int					animTime	= 4;
+	private String			text;
 
-	public Button(float xKord, float yKord, TextureRegion buttonImage, BitmapFont	font, String text) {
+	private float			time		= 0;
+	private int				animTime	= 4;
+
+	public Button(float xKord, float yKord, TextureRegion buttonImage, BitmapFont font, String text) {
 		this.buttonImage = buttonImage;
 		this.xKord = xKord;
 		this.yKord = yKord;
 		this.font = font;
 		this.text = text;
-		
+
 		width = 48;
 		height = 48;
 		maxWidth = 48; // degistirilebilir
@@ -69,6 +69,14 @@ public class Button implements GameObject {
 
 	public Rectangle getButtonRect() {
 		return buttonRect;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public void dispose() {

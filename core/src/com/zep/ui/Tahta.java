@@ -6,8 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.zep.fx.AxisType;
-import com.zep.fx.FxRmCentripetalDot;
 import com.zep.fx.FxRemove;
+import com.zep.fx.FxRmCentripetalDot;
 import com.zep.object.Direction;
 import com.zep.sounds.MusicLoader;
 import com.zep.states.PlayState;
@@ -123,6 +123,10 @@ public class Tahta {
 			System.out.println("Bitti!");
 			System.out.println("Score: " + state.getScore().getScore());
 			System.out.println("HighScore: " + state.getScore().getHighScore());
+			state.getScore().setHighScore(state.getScore().getScore()); // highScore yaz
+			if (state.getScore().getScore() > state.getScore().getHighScore()) {
+				System.out.println("New High Score: " + state.getScore().getHighScore());
+			}
 
 			MusicLoader.musicStopFx();
 			state.cancelSchedule();

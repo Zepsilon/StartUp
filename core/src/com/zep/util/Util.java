@@ -14,7 +14,7 @@ public class Util {
 	private static Preferences	prefs;
 
 	public static void load() {
-		prefs = Gdx.app.getPreferences(Constant.PREF_NAME);
+		prefs = Gdx.app.getPreferences(Constant.PREF_GANE_NAME);
 		
 		baseFileHandle = Gdx.files.internal("i18n/MyBundle");
 		bundle = I18NBundle.createBundle(baseFileHandle, new Locale(Prefs.getValue(Constant.PREF_LANG)));

@@ -125,7 +125,7 @@ public class Tahta {
 			System.out.println("HighScore: " + state.getScore().getHighScore());
 			state.getScore().setHighScore(state.getScore().getScore()); // highScore yaz
 			if (state.getScore().getScore() > state.getScore().getHighScore()) {
-				System.out.println("New High Score: " + state.getScore().getHighScore());
+				System.out.println("New High Score: " + state.getScore().getScore());
 			}
 
 			MusicLoader.musicStopFx();

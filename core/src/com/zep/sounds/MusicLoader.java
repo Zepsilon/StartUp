@@ -58,12 +58,12 @@ public class MusicLoader {
 	}
 
 	/**
-	 * musigi efekt'li sekilde durdurur
+	 * musigi durdurur
 	 * 
 	 */
 	public static void musicStopFx() {
-		if (music != null)
-			music.stop();
+		if (fxRemove != null)
+			fxRemove.stop();
 		// fx icin sound calistir
 	}
 

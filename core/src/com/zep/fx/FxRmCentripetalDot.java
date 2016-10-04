@@ -17,7 +17,7 @@ public class FxRmCentripetalDot implements FxRemove {
 
 	@Override
 	public void draw(SpriteBatch sb, Kare kare, int i, int j, int dw, int dh, int x, int y) {
-		sb.draw(ImageLoader.txtrRegBtn[kare.color()], x + i * dw + (dw - kare.width()) / 2+3, y + j * dh + (dh - kare.height()) / 2+3, kare.width(), kare.height());
+		sb.draw(ImageLoader.txtrRegBtn[kare.color()], x + i * dw + (dw - kare.width()) / 2, y + j * dh + (dh - kare.height()) / 2, kare.width(), kare.height());
 	}
 
 	@Override

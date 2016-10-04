@@ -40,7 +40,7 @@ public class PlayState extends State {
 		cam = camera;
 		this.sm = sm;
 
-		int kareWidth = (Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / (Constant.POW / 2)) / (8 + 2);
+		int kareWidth = (Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / (Constant.POW / 2)) / (Constant.SQUARE_SIZE + 2);
 
 		int unitWidth = Gdx.graphics.getWidth() / Constant.POW;
 		int unitHeight = Gdx.graphics.getHeight() / Constant.POH;

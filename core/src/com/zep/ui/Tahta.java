@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.zep.fx.AxisType;
 import com.zep.fx.FxRemove;
@@ -13,6 +12,7 @@ import com.zep.images.ImageLoader;
 import com.zep.object.Direction;
 import com.zep.sounds.MusicLoader;
 import com.zep.states.PlayState;
+import com.zep.util.Constant;
 
 public class Tahta {
 
@@ -21,6 +21,7 @@ public class Tahta {
 	private Pattern[][]		pattern;
 	private int				kareDW, kareDH;	// default boyutlar (update asamasinda animasyon icin kullanilacak)
 	private int				x, y;			// x - y koordinatlari
+	private int				px, py;			// pattern için x - y koordinatlari
 	private int				row, col;		// satir - sutun sayisi
 	public static final int	CN	= 5;		// renk miktari
 
@@ -62,7 +63,7 @@ public class Tahta {
 				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
 				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
 				kare[i][j] = new Kare(this, width, height, color, visible);
-				pattern[i][j] = new Pattern(width+6, height+6, (i+j)%2);
+				pattern[i][j] = new Pattern(width + Constant.SHAPE_GAP, height + Constant.SHAPE_GAP, (i + j) % 2);
 			}
 		}
 
@@ -74,15 +75,23 @@ public class Tahta {
 	public void render(SpriteBatch sb) {
 		sb.begin();
 
-		x = (Gdx.graphics.getWidth() - kareDW * getKareRowLen()) / 2;
+		px = (Gdx.graphics.getWidth() - (kareDW + Constant.SHAPE_GAP) * row) / 2;
+		py = (2 * Gdx.graphics.getHeight() / 3) - (kareDH * col / 2);
+
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				sb.draw(ImageLoader.txrgPattern[pattern[i][j].getColor()], px + i * pattern[i][j].width(), py + j * pattern[i][j].height(), pattern[i][j].width(),
+						pattern[i][j].height());
+			}
+		}
+
+		x = ((Gdx.graphics.getWidth() - (kareDW + Constant.SHAPE_GAP) * getKareRowLen()) / 2);//-(row-getKareRowLen())*(kareDW + Constant.SHAPE_GAP);
 		y = (2 * Gdx.graphics.getHeight() / 3) - (kareDH * getKareColLen() / 2);
-		TextureRegion txtr = null;
+
 		for (int i = 0; i < kare.length; i++) {
 			for (int j = 0; j < kare[i].length; j++) {
-				txtr = ImageLoader.txrgPattern[pattern[i][j].getColor()];
-				sb.draw(txtr, x + i * pattern[i][j].width(), y + j * pattern[i][j].height(), pattern[i][j].width(), pattern[i][j].height());
 				if (kare[i][j] != null && kare[i][j].isVisible()) {
-					fx.draw(sb, kare[i][j], i, j, kareDW, kareDH, x, y);
+					fx.draw(sb, kare[i][j], i, j, kareDW + Constant.SHAPE_GAP, kareDH + Constant.SHAPE_GAP, x, y);
 				}
 			}
 		}

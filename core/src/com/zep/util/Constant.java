@@ -17,10 +17,12 @@ public class Constant {
 
 	public static int			MULTIPLIER		= 2;
 
-	public static final int		SQUARE_SIZE		= 5;
+	public static final int		SQUARE_SIZE		= 9;
 	/** birim en */
 	public static final int		POW				= 10;
 	/** birim boy */
 	public static final int		POH				= 15;
+	/** pattern kareden farkı */
+	public static final int		SHAPE_GAP	= 6;
 
 }

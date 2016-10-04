@@ -38,14 +38,14 @@ public class ImageLoader {
 		btnVolumeOnSlc = splitBtnSlcReg[0][2];
 //		btnVolumeOffSlc = new TextureRegion(txtrButtonsSlc, 576, 0, 192, 192);
 		
-		txtrBtn = new Texture("buttons/Buttons_WHT.png");
+		txtrBtn = new Texture("buttons/Square.png");
 		txtrRegBtn = new TextureRegion[size];
 
-		x = 20;
-		y = 20;
-		width = 62;
+		x = 0;
+		y = 0;
+		width = 140;
 		height = width;
-		gap = 7;
+		gap = 0;
 
 		for (int i = 0; i < 5; i++) {
 			txtrRegBtn[i] = new TextureRegion(txtrBtn, x, y, width, height); // tek tek parcalar aliniyor
@@ -58,7 +58,7 @@ public class ImageLoader {
 		txtrRegBkg = new TextureRegion(txtrBkg);
 //		txtrRegBkg.flip(false, true);
 
-		txtrGroundAndPattern = new Texture("backround/groundAndPattern.png");
+		txtrGroundAndPattern = new Texture("backround/groundAndPattern3.png");
 		txrgGround = new TextureRegion(txtrGroundAndPattern, 0, 100, 5, 5);
 //		txrgGround.flip(false, true);
 		

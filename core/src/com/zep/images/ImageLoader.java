@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class ImageLoader {
 
-	private static Texture txtrButtons;
-	private static Texture txtrButtonsSlc;
-	public static TextureRegion	btnNewGame, btnNewGameSlc;
+	private static Texture txtrButtonsSlc, txtrButtons, txtrGroundAndPattern;
+	public static TextureRegion	btnNewGame, btnNewGameSlc, txrgGround, txrgPattern[];
 	public static TextureRegion	btnLanguage, btnLanguageSlc;
 	public static TextureRegion	btnVolumeOn, btnVolumeOnSlc;
 	public static TextureRegion	btnVolumeOff, btnVolumeOffSlc;
@@ -39,10 +38,6 @@ public class ImageLoader {
 		btnVolumeOnSlc = splitBtnSlcReg[0][2];
 //		btnVolumeOffSlc = new TextureRegion(txtrButtonsSlc, 576, 0, 192, 192);
 		
-		txtrBkg = new Texture("backround/backroundLightYear.png");
-		txtrRegBkg = new TextureRegion(txtrBkg);
-//		txtrRegBkg.flip(false, true);
-
 		txtrBtn = new Texture("buttons/Buttons_WHT.png");
 		txtrRegBtn = new TextureRegion[size];
 
@@ -57,6 +52,19 @@ public class ImageLoader {
 //            txtrRegBtn[i].flip(false, true);
 			x += width + gap;
 		}
+		
+
+		txtrBkg = new Texture("backround/backroundLightYear.png");
+		txtrRegBkg = new TextureRegion(txtrBkg);
+//		txtrRegBkg.flip(false, true);
+
+		txtrGroundAndPattern = new Texture("backround/groundAndPattern.png");
+		txrgGround = new TextureRegion(txtrGroundAndPattern, 0, 100, 5, 5);
+//		txrgGround.flip(false, true);
+		
+		txrgPattern = new TextureRegion[]{new TextureRegion(txtrGroundAndPattern, 0, 0, 50, 50), new TextureRegion(txtrGroundAndPattern, 50, 0, 50, 50)};
+//		txrgPattern[0].flip(false, true);
+//		txrgPattern[1].flip(false, true);
 
 	}
 

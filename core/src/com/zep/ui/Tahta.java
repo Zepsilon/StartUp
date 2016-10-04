@@ -4,10 +4,12 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.zep.fx.AxisType;
 import com.zep.fx.FxRemove;
 import com.zep.fx.FxRmCentripetalDot;
+import com.zep.images.ImageLoader;
 import com.zep.object.Direction;
 import com.zep.sounds.MusicLoader;
 import com.zep.states.PlayState;
@@ -16,6 +18,7 @@ public class Tahta {
 
 	private PlayState		state;
 	private Kare[][]		kare;
+	private Pattern[][]		pattern;
 	private int				kareDW, kareDH;	// default boyutlar (update asamasinda animasyon icin kullanilacak)
 	private int				x, y;			// x - y koordinatlari
 	private int				row, col;		// satir - sutun sayisi
@@ -39,6 +42,7 @@ public class Tahta {
 		this.col = col;
 
 		kare = new Kare[row][col];
+		pattern = new Pattern[row][col];
 
 		initKare(kareDW, kareDH);
 
@@ -58,6 +62,7 @@ public class Tahta {
 				visible = !(i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1);
 				color = (i == 0 || i == kare.length - 1 || j == 0 || j == kare[i].length - 1) ? 0 : (int) new Random().nextInt(CN);
 				kare[i][j] = new Kare(this, width, height, color, visible);
+				pattern[i][j] = new Pattern(width+6, height+6, (i+j)%2);
 			}
 		}
 
@@ -71,8 +76,11 @@ public class Tahta {
 
 		x = (Gdx.graphics.getWidth() - kareDW * getKareRowLen()) / 2;
 		y = (2 * Gdx.graphics.getHeight() / 3) - (kareDH * getKareColLen() / 2);
+		TextureRegion txtr = null;
 		for (int i = 0; i < kare.length; i++) {
 			for (int j = 0; j < kare[i].length; j++) {
+				txtr = ImageLoader.txrgPattern[pattern[i][j].getColor()];
+				sb.draw(txtr, x + i * pattern[i][j].width(), y + j * pattern[i][j].height(), pattern[i][j].width(), pattern[i][j].height());
 				if (kare[i][j] != null && kare[i][j].isVisible()) {
 					fx.draw(sb, kare[i][j], i, j, kareDW, kareDH, x, y);
 				}

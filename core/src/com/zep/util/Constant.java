@@ -17,7 +17,7 @@ public class Constant {
 
 	public static int			MULTIPLIER		= 2;
 
-	public static final int		SQUARE_SIZE		= 9;
+	public static final int		SQUARE_SIZE		= 5;
 	/** birim en */
 	public static final int		POW				= 10;
 	/** birim boy */

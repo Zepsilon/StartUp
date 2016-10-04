@@ -156,7 +156,7 @@ public class MenuState extends State {
 		sb.setProjectionMatrix(camera.combined);
 		sb.begin();
 
-		sb.draw(ImageLoader.txtrRegBkg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		sb.draw(ImageLoader.txtrRegBkg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		fontButton.draw(sb, Util.Bundle.getText("title.highScore") + Util.Prefs.getValue(Constant.PREF_HIGH_SCORE, 0), buttonX * 5, buttonY * 3);
 
 		sb.end();

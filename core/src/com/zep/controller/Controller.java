@@ -5,6 +5,7 @@ import java.util.Random;
 import com.badlogic.gdx.math.Vector2;
 import com.zep.object.Direction;
 import com.zep.ui.Kare;
+import com.zep.ui.Pattern;
 import com.zep.ui.Tahta;
 
 public class Controller {
@@ -203,6 +204,20 @@ public class Controller {
 			
 			if (active != null)
 				tahta.getKare()[x][y] = active;
+
+			deletePatternRow();
+		}
+
+	}
+
+	private void deletePatternRow() {
+		Pattern[][] args = tahta.getPattern().clone();
+		tahta.setPattern(new Pattern[args.length][args[0].length - 1]);
+		
+		for (int i = 0; i < tahta.getPattern().length; i++) {
+			for (int j = 0; j < tahta.getPattern()[i].length; j++) {
+				tahta.getPattern()[i][j] = args[i][j];
+			}
 		}
 
 	}
@@ -238,6 +253,20 @@ public class Controller {
 			
 			if (active != null)
 				tahta.getKare()[x][y] = active;
+			
+			deletePatternCol();
+		}
+
+	}
+
+	private void deletePatternCol() {
+		Pattern[][] args = tahta.getPattern().clone();
+		tahta.setPattern(new Pattern[args.length - 1][args[0].length]);
+		
+		for (int i = 0; i < tahta.getPattern().length; i++) {
+			for (int j = 0; j < tahta.getPattern()[i].length; j++) {
+				tahta.getPattern()[i][j] = args[i][j];
+			}
 		}
 
 	}

@@ -21,7 +21,7 @@ public class Tahta {
 	private Pattern[][]		pattern;
 	private int				kareDW, kareDH;	// default boyutlar (update asamasinda animasyon icin kullanilacak)
 	private int				x, y;			// x - y koordinatlari
-	private int				px, py;			// pattern için x - y koordinatlari
+//	private int				px, py;			// pattern için x - y koordinatlari
 	private int				row, col;		// satir - sutun sayisi
 	public static final int	CN	= 5;		// renk miktari
 
@@ -75,26 +75,38 @@ public class Tahta {
 	public void render(SpriteBatch sb) {
 		sb.begin();
 
-		px = (Gdx.graphics.getWidth() - (kareDW + Constant.SHAPE_GAP) * row) / 2;
-		py = (2 * Gdx.graphics.getHeight() / 3) - (kareDH * col / 2);
-
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < col; j++) {
-				sb.draw(ImageLoader.txrgPattern[pattern[i][j].getColor()], px + i * pattern[i][j].width(), py + j * pattern[i][j].height(), pattern[i][j].width(),
-						pattern[i][j].height());
-			}
-		}
-
-		x = ((Gdx.graphics.getWidth() - (kareDW + Constant.SHAPE_GAP) * getKareRowLen()) / 2);//-(row-getKareRowLen())*(kareDW + Constant.SHAPE_GAP);
+		x = ((Gdx.graphics.getWidth() - (kareDW + Constant.SHAPE_GAP) * getKareRowLen()) / 2);
 		y = (2 * Gdx.graphics.getHeight() / 3) - (kareDH * getKareColLen() / 2);
 
+		// ust ve alt sol kenarlar
+		sb.draw(ImageLoader.txrgBorder[2], x - pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+		sb.draw(ImageLoader.txrgBorder[0], x - pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
+				pattern[0][0].height());
+
 		for (int i = 0; i < kare.length; i++) {
+			// ust ve alt satirlar
+			sb.draw(ImageLoader.txrgBorder[4], x + i * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+			sb.draw(ImageLoader.txrgBorder[5], x + i * pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
+					pattern[0][0].height());
 			for (int j = 0; j < kare[i].length; j++) {
+				// sol ve sag sutun
+				sb.draw(ImageLoader.txrgBorder[6], x - pattern[0][0].width(), y + j * pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+				sb.draw(ImageLoader.txrgBorder[7], x + kare.length * pattern[0][0].width(), y + j * pattern[0][0].height(), pattern[0][0].width(),
+						pattern[0][0].height());
+				// patern
+				sb.draw(ImageLoader.txrgPattern[pattern[i][j].getColor()], x + i * pattern[i][j].width(), y + j * pattern[i][j].height(), pattern[i][j].width(),
+						pattern[i][j].height());
 				if (kare[i][j] != null && kare[i][j].isVisible()) {
 					fx.draw(sb, kare[i][j], i, j, kareDW + Constant.SHAPE_GAP, kareDH + Constant.SHAPE_GAP, x, y);
 				}
 			}
+
 		}
+
+		// ust ve alt sag kenarlar
+		sb.draw(ImageLoader.txrgBorder[3], x + kare.length * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+		sb.draw(ImageLoader.txrgBorder[1], x + kare.length * pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
+				pattern[0][0].height());
 
 		sb.end();
 	}
@@ -252,6 +264,14 @@ public class Tahta {
 
 	public int y() {
 		return this.y;
+	}
+
+	public Pattern[][] getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(Pattern[][] pattern) {
+		this.pattern = pattern;
 	}
 
 	public Kare[][] getKare() {

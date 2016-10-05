@@ -4,9 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class ImageLoader {
+	private static Texture txtrBorder;
+	public static TextureRegion	txrgBorder[];
+	
+	private static Texture txtrGroundAndPattern;
+	public static TextureRegion	txrgGround, txrgPattern[];
 
-	private static Texture txtrButtonsSlc, txtrButtons, txtrGroundAndPattern;
-	public static TextureRegion	btnNewGame, btnNewGameSlc, txrgGround, txrgPattern[];
+	private static Texture txtrButtonsSlc, txtrButtons;
+	public static TextureRegion	btnNewGame, btnNewGameSlc;
 	public static TextureRegion	btnLanguage, btnLanguageSlc;
 	public static TextureRegion	btnVolumeOn, btnVolumeOnSlc;
 	public static TextureRegion	btnVolumeOff, btnVolumeOffSlc;
@@ -66,6 +71,13 @@ public class ImageLoader {
 //		txrgPattern[0].flip(false, true);
 //		txrgPattern[1].flip(false, true);
 
+		txtrBorder = new Texture("backround/borders.png");
+		TextureRegion[][] borderBtnReg = new TextureRegion(txtrBorder).split(40, 40);
+		txrgBorder = new TextureRegion[]{borderBtnReg[0][0], borderBtnReg[0][1], borderBtnReg[0][2], borderBtnReg[0][3], borderBtnReg[0][4], borderBtnReg[0][5], borderBtnReg[0][6], borderBtnReg[0][7]};
+
+//		for (int i = 0; i < borderBtnReg.length; i++) {
+//			txrgBorder[i] = borderBtnReg[0][i];
+//		}
 	}
 
 	public static void dispose() {

@@ -30,7 +30,7 @@ public class PlayState extends State {
 	private Tahta				tahta;
 	private Controller			controller;
 	private ScoreHandler		score;
-	private PlayTimerHandler	timer;
+//	private PlayTimerHandler	timer;
 	private ClockHandler		clock;
 
 	public PlayState(StateManager sm) {
@@ -47,9 +47,9 @@ public class PlayState extends State {
 
 		sr = new ShapeRenderer();
 
-		timer = new PlayTimerHandler(this, 2 * Constant.SQUARE_SIZE);
-		clock = new ClockHandler(this, new Vector2(3 * unitWidth, 3 * unitHeight), 50);
-		score = new ScoreHandler(timer, Constant.MULTIPLIER, Constant.SQUARE_SIZE);
+//		timer = new PlayTimerHandler(this, Constant.SQUARE_SIZE);
+		clock = new ClockHandler(new PlayTimerHandler(this, Constant.SQUARE_SIZE), new Vector2(3 * unitWidth, 3 * unitHeight), 50);
+		score = new ScoreHandler(clock.getPlayerTimer(), Constant.MULTIPLIER, Constant.SQUARE_SIZE);
 
 		tahta = new Tahta(this, kareWidth, Constant.SQUARE_SIZE, Constant.SQUARE_SIZE);
 
@@ -65,14 +65,12 @@ public class PlayState extends State {
 
 	public void reScheduleTask() {
 		// satir ya da sütun yok edildiginde cagrilir
-		clock.reSchedule();
-		timer.scheduleTask(tahta.getKareRowLen() + tahta.getKareColLen() - 2);
+		clock.reSchedule((tahta.getKareRowLen() + tahta.getKareColLen()) / 2);
 	}
 
 	public void cancelSchedule() {
 		// Oyun bittiginde cagrilir
 		getClock().cancelSchedule();
-		getTimer().cancelSchedule();
 	}
 
 	public void render(SpriteBatch sb) {
@@ -136,10 +134,6 @@ public class PlayState extends State {
 
 	public ScoreHandler getScore() {
 		return score;
-	}
-
-	public PlayTimerHandler getTimer() {
-		return timer;
 	}
 
 	public ClockHandler getClock() {

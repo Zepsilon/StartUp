@@ -48,19 +48,41 @@ public class MenuState extends State {
 		buttonNewGame.setWidth(150);
 		buttonNewGame.setX(buttonX * 5 - buttonNewGame.getWidth() / 2);
 		buttonNewGame.setY(buttonY * 9);
-		buttonNewGame.addListener(new InputListener() {
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				getSm().pushState(new PlayState(getSm()));
-				return false;
-			}
-		});
+		setNewGameListener();
 
 		buttonSound = new Button(SkinLoader.skin, "sound");
-		if (isSoundOn) {
-			buttonSound.getStyle().up = buttonSound.getStyle().checked;
-		}
 		buttonSound.setX(buttonX * 4 - buttonSound.getWidth() / 2);
 		buttonSound.setY(buttonY * 5);
+		buttonSound.setChecked(isSoundOn);
+		setSoundListener();
+
+		buttonMusic = new Button(SkinLoader.skin, "music");
+		buttonMusic.setX(buttonX * 6 - buttonMusic.getWidth() / 2);
+		buttonMusic.setY(buttonY * 5);
+		buttonMusic.setChecked(isMusicOn);
+		setMusicListener();
+
+		/**/
+		buttonLanguage = new SelectBox<String>(SkinLoader.skin);
+		buttonLanguage.setItems(Util.Bundle.getText("title.lang.english"), Util.Bundle.getText("title.lang.turkish"));
+		buttonLanguage.setWidth(150);
+		buttonLanguage.setX(buttonX * 5 - buttonLanguage.getWidth() / 2);
+		buttonLanguage.setY(buttonY * 7);
+		if (Constant.LOCAL_TR.equals(Util.Prefs.getValue(Constant.PREF_LANG, Constant.LOCAL_EN))) {
+			buttonLanguage.setSelectedIndex(1);
+		}
+		setLanguageListener();
+
+		SkinLoader.stage.addActor(buttonLanguage);
+		SkinLoader.stage.addActor(buttonNewGame);
+		SkinLoader.stage.addActor(buttonMusic);
+		SkinLoader.stage.addActor(buttonSound);
+
+		Gdx.input.setInputProcessor(SkinLoader.stage);
+		/**/
+	}
+
+	private void setSoundListener() {
 		buttonSound.addListener(new ClickListener() {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
@@ -83,13 +105,9 @@ public class MenuState extends State {
 				System.out.println("touchUp " + pointer);
 			}
 		});
+	}
 
-		buttonMusic = new Button(SkinLoader.skin, "music");
-		if (isMusicOn) {
-			buttonMusic.getStyle().up = buttonMusic.getStyle().checked;
-		}
-		buttonMusic.setX(buttonX * 6 - buttonMusic.getWidth() / 2);
-		buttonMusic.setY(buttonY * 5);
+	private void setMusicListener() {
 		buttonMusic.addListener(new ClickListener() {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
@@ -112,18 +130,18 @@ public class MenuState extends State {
 				System.out.println("touchUp " + pointer);
 			}
 		});
+	}
 
-		/**/
-		buttonLanguage = new SelectBox<String>(SkinLoader.skin);
-		buttonLanguage.setItems(Util.Bundle.getText("title.lang.english"), Util.Bundle.getText("title.lang.turkish"));
-		buttonLanguage.setWidth(150);
-		buttonLanguage.setX(buttonX * 5 - buttonLanguage.getWidth() / 2);
-		buttonLanguage.setY(buttonY * 7);
+	private void setNewGameListener() {
+		buttonNewGame.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				getSm().pushState(new PlayState(getSm()));
+				return false;
+			}
+		});
+	}
 
-		if (Constant.LOCAL_TR.equals(Util.Prefs.getValue(Constant.PREF_LANG, Constant.LOCAL_EN))) {
-			buttonLanguage.setSelectedIndex(1);
-		}
-
+	private void setLanguageListener() {
 		buttonLanguage.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
 //	            dialog.show(SkinLoader.stage);
@@ -139,14 +157,6 @@ public class MenuState extends State {
 				getSm().pushState(new MenuState(getSm()));
 			}
 		});
-
-		SkinLoader.stage.addActor(buttonLanguage);
-		SkinLoader.stage.addActor(buttonNewGame);
-		SkinLoader.stage.addActor(buttonMusic);
-		SkinLoader.stage.addActor(buttonSound);
-
-		Gdx.input.setInputProcessor(SkinLoader.stage);
-		/**/
 	}
 
 	@Override

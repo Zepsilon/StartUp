@@ -7,6 +7,7 @@ import com.zep.object.Direction;
 import com.zep.ui.Kare;
 import com.zep.ui.Pattern;
 import com.zep.ui.Tahta;
+import com.zep.util.Constant;
 
 public class Controller {
 
@@ -132,6 +133,8 @@ public class Controller {
 		tahta.getFx().animType(false);
 
 		shiftActiveKareToDown((int) activeIdx.x, (int) activeIdx.y);
+		
+		changePatternSize(true, true);
 
 		System.out.println(kClone[0].length + " - " + tahta.getKareColLen());
 	}
@@ -153,6 +156,8 @@ public class Controller {
 		tahta.getFx().animType(false);
 
 		shiftActiveKareToRight((int) activeIdx.x, (int) activeIdx.y);
+		
+		changePatternSize(false, true);
 
 	}
 
@@ -210,16 +215,9 @@ public class Controller {
 
 	}
 
+	
 	private void deletePatternRow() {
-		Pattern[][] args = tahta.getPattern().clone();
-		tahta.setPattern(new Pattern[args.length][args[0].length - 1]);
-		
-		for (int i = 0; i < tahta.getPattern().length; i++) {
-			for (int j = 0; j < tahta.getPattern()[i].length; j++) {
-				tahta.getPattern()[i][j] = args[i][j];
-			}
-		}
-
+		changePatternSize(true, false);
 	}
 
 	public void deleteColumn(int iD) {
@@ -260,12 +258,23 @@ public class Controller {
 	}
 
 	private void deletePatternCol() {
-		Pattern[][] args = tahta.getPattern().clone();
-		tahta.setPattern(new Pattern[args.length - 1][args[0].length]);
+		changePatternSize(false, false);
+	}
+
+	private void changePatternSize(boolean isRow, boolean add) {
+		int row = 0;
+		int col = 0;
+		if (isRow) {
+			row = (add) ? 1 : -1;
+		} else {
+			col = (add) ? 1 : -1;
+		}
 		
+		tahta.setPattern(new Pattern[tahta.getPattern().length + col][tahta.getPattern()[0].length + row]);
+
 		for (int i = 0; i < tahta.getPattern().length; i++) {
 			for (int j = 0; j < tahta.getPattern()[i].length; j++) {
-				tahta.getPattern()[i][j] = args[i][j];
+				tahta.getPattern()[i][j] = new Pattern(width + Constant.SHAPE_GAP, height + Constant.SHAPE_GAP, (i + j) % 2);
 			}
 		}
 

@@ -5,6 +5,7 @@ import java.util.Date;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.zep.states.PlayState;
+import com.zep.util.Util;
 
 public class PlayTimerHandler {
 
@@ -13,6 +14,7 @@ public class PlayTimerHandler {
 	private Timer		timer;
 	private Task		task;
 	private float		delay;
+	private boolean rescheduled;
 
 	public PlayTimerHandler(PlayState playState, float delay) {
 
@@ -39,24 +41,25 @@ public class PlayTimerHandler {
 				} else {
 					playState.getController().addColumn();
 				}
-				scheduleTask(delay+1);
+				rescheduled = true;
+				scheduleTask((playState.getTahta().getKareRowLen() + playState.getTahta().getKareColLen() + 1) / 2);
 			}
 		};
 	}
 
-	public void scheduleTask(float delay) {
+	public void scheduleTask(float sn) {
 		// satir ya da sütun yok edildiginde cagrilir
 		if (task == null) {
 			initTimerTask();
 		}
-		
+
+		this.delay = Util.MathUtil.fibonacci((int) sn);
 		System.out.println("Task scheduled: " + delay);
-		this.delay = delay;
 		timer.clear(); // önce timer iptal edilir, ardindan asagidaki satir ile tekrar set edilir.
 		startTime = new Date().getTime();
 		timer.scheduleTask(task, delay);
 	}
-	
+
 	public void cancelSchedule() {
 		timer.clear();
 	}
@@ -68,5 +71,13 @@ public class PlayTimerHandler {
 
 	public float delay() {
 		return delay;
+	}
+
+	public boolean isRescheduled() {
+		return rescheduled;
+	}
+
+	public void setRescheduled(boolean rescheduled) {
+		this.rescheduled = rescheduled;
 	}
 }

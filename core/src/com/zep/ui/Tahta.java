@@ -83,6 +83,11 @@ public class Tahta {
 		sb.draw(ImageLoader.txrgBorder[0], x - pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
 				pattern[0][0].height());
 
+		// ust ve alt sag kenarlar
+		sb.draw(ImageLoader.txrgBorder[3], x + kare.length * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+		sb.draw(ImageLoader.txrgBorder[1], x + kare.length * pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
+				pattern[0][0].height());
+
 		for (int i = 0; i < kare.length; i++) {
 			// ust ve alt satirlar
 			sb.draw(ImageLoader.txrgBorder[4], x + i * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
@@ -102,11 +107,6 @@ public class Tahta {
 			}
 
 		}
-
-		// ust ve alt sag kenarlar
-		sb.draw(ImageLoader.txrgBorder[3], x + kare.length * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
-		sb.draw(ImageLoader.txrgBorder[1], x + kare.length * pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
-				pattern[0][0].height());
 
 		sb.end();
 	}
@@ -255,7 +255,7 @@ public class Tahta {
 	}
 
 	public int getKareColLen() {
-		return kare[0].length;
+		return kare[1].length;
 	}
 
 	public int x() {

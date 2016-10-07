@@ -51,10 +51,10 @@ public class KareTahta extends Game {
     	Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-//        sb.begin();
-////        sb.draw(ImageLoader.txtrRegBkg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        sb.begin();
+        sb.draw(ImageLoader.txtrRegBkg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 //        sb.draw(ImageLoader.txrgGround, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        sb.end();
+        sb.end();
         
         sm.render(sb);
         sm.update(Gdx.graphics.getDeltaTime()); //bir iki frame arasinda gecen sureyi verir

@@ -7,23 +7,22 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
-import com.zep.states.PlayState;
 
 public class ClockHandler {
 
-	private PlayState	playState;
-	private Vector2		center;
-	private Vector2		coordinate;
-	private float		radius;
-	private float		degrees;
-	private Timer timer;
-	private Task task;
-	private static final int FIX_DEGREE = 270; // ust
+	private Vector2				center;
+	private Vector2				coordinate;
+	private float				radius;
+	private float				degrees;
+	private Timer				timer;
+	private Task				task;
+	private PlayTimerHandler	playerTimer;
+	private static final int	FIX_DEGREE	= 270;	// ust
 
-	public ClockHandler(PlayState playState, Vector2 center, float radius) {
-		this.playState = playState;
+	public ClockHandler(PlayTimerHandler playerTimer, Vector2 center, float radius) {
 		this.center = center;
 		this.radius = radius;
+		this.playerTimer = playerTimer;
 
 		this.degrees = 0;
 
@@ -45,28 +44,38 @@ public class ClockHandler {
 		reSchedule();
 	}
 
-	public void reSchedule() {
+	private void reSchedule() {
 		timer.clear();
-		
+		this.degrees = 0;
+
 		if (task == null)
 			schedule();
-		
-		this.degrees = 0;
+
 		timer.scheduleTask(task, 1, 1);
 	}
-	
+
+	public void reSchedule(float delay) {
+		playerTimer.scheduleTask(delay);
+		reSchedule();
+	}
+
 	public void cancelSchedule() {
 		timer.clear();
 		degrees = 0;
+		playerTimer.cancelSchedule();
 	}
 
 	private void updateDegrees() {
-		degrees += 360 / playState.getTimer().delay(); // zamani duzelt
+		degrees += 360 / playerTimer.delay(); // zamani duzelt
 		degrees = degrees % 360;
 //		System.out.println(degrees + FIX_DEGREE);
 	}
 
 	public void render(ShapeRenderer sr) {
+		if (playerTimer.isRescheduled()){
+			playerTimer.setRescheduled(false);
+			reSchedule();
+		}
 		sr.begin(ShapeType.Line);
 
 		sr.setColor(Color.RED);
@@ -82,6 +91,14 @@ public class ClockHandler {
 
 		coordinate.x = center.x + radius * MathUtils.cosDeg(degrees + FIX_DEGREE);
 		coordinate.y = center.y + radius * MathUtils.sinDeg(degrees + FIX_DEGREE);
+	}
+
+	public PlayTimerHandler getPlayerTimer() {
+		return playerTimer;
+	}
+
+	public void setPlayerTimer(PlayTimerHandler playerTimer) {
+		this.playerTimer = playerTimer;
 	}
 
 }

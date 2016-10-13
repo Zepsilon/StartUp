@@ -79,25 +79,25 @@ public class Tahta {
 		y = (2 * Gdx.graphics.getHeight() / 3) - (kareDH * getKareColLen() / 2);
 
 		// ust ve alt sol kenarlar
-		sb.draw(ImageLoader.txrgBorder[2], x - pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
-		sb.draw(ImageLoader.txrgBorder[0], x - pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
-				pattern[0][0].height());
+//		sb.draw(ImageLoader.txrgBorder[2], x - pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+//		sb.draw(ImageLoader.txrgBorder[0], x - pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
+//				pattern[0][0].height());
 
 		// ust ve alt sag kenarlar
-		sb.draw(ImageLoader.txrgBorder[3], x + kare.length * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
-		sb.draw(ImageLoader.txrgBorder[1], x + kare.length * pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
-				pattern[0][0].height());
+//		sb.draw(ImageLoader.txrgBorder[3], x + kare.length * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+//		sb.draw(ImageLoader.txrgBorder[1], x + kare.length * pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
+//				pattern[0][0].height());
 
 		for (int i = 0; i < kare.length; i++) {
 			// ust ve alt satirlar
-			sb.draw(ImageLoader.txrgBorder[4], x + i * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
-			sb.draw(ImageLoader.txrgBorder[5], x + i * pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
-					pattern[0][0].height());
+//			sb.draw(ImageLoader.txrgBorder[4], x + i * pattern[0][0].width(), y - pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+//			sb.draw(ImageLoader.txrgBorder[5], x + i * pattern[0][0].width(), y + kare[0].length * pattern[0][0].height(), pattern[0][0].width(),
+//					pattern[0][0].height());
 			for (int j = 0; j < kare[i].length; j++) {
 				// sol ve sag sutun
-				sb.draw(ImageLoader.txrgBorder[6], x - pattern[0][0].width(), y + j * pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
-				sb.draw(ImageLoader.txrgBorder[7], x + kare.length * pattern[0][0].width(), y + j * pattern[0][0].height(), pattern[0][0].width(),
-						pattern[0][0].height());
+//				sb.draw(ImageLoader.txrgBorder[6], x - pattern[0][0].width(), y + j * pattern[0][0].height(), pattern[0][0].width(), pattern[0][0].height());
+//				sb.draw(ImageLoader.txrgBorder[7], x + kare.length * pattern[0][0].width(), y + j * pattern[0][0].height(), pattern[0][0].width(),
+//						pattern[0][0].height());
 				// patern
 				sb.draw(ImageLoader.txrgPattern[pattern[i][j].getColor()], x + i * pattern[i][j].width(), y + j * pattern[i][j].height(), pattern[i][j].width(),
 						pattern[i][j].height());

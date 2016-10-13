@@ -63,11 +63,11 @@ public class ImageLoader {
 		txtrRegBkg = new TextureRegion(txtrBkg);
 //		txtrRegBkg.flip(false, true);
 
-		txtrGroundAndPattern = new Texture("backround/groundAndPattern3.png");
+		txtrGroundAndPattern = new Texture("backround/groundAndPattern4.png");
 		txrgGround = new TextureRegion(txtrGroundAndPattern, 0, 100, 5, 5);
 //		txrgGround.flip(false, true);
 		
-		txrgPattern = new TextureRegion[]{new TextureRegion(txtrGroundAndPattern, 0, 0, 50, 50), new TextureRegion(txtrGroundAndPattern, 50, 0, 50, 50)};
+		txrgPattern = new TextureRegion[]{new TextureRegion(txtrGroundAndPattern, 50, 0, 50, 50), new TextureRegion(txtrGroundAndPattern, 50, 0, 50, 50)};
 //		txrgPattern[0].flip(false, true);
 //		txrgPattern[1].flip(false, true);
 
